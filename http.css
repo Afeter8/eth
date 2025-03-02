@@ -1,0 +1,485 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1"/>
+<title></title>
+<link href="Cuscss/login.css?20241121110025137262-2068654386"  media="all" rel="stylesheet" />
+<style type="text/css">
+#first{
+background-color:white;
+height:25px;
+text-align: center;
+color: red;
+position:absolute;
+width: 380px;
+top: 312px;
+}
+</style>
+<script language="JavaScript" src="../resource/common/md5.js?20241121110025137262-2068654386"></script>
+<script language="JavaScript" src="../resource/common/RndSecurityFormat.js?20241121110025137262-2068654386"></script>
+<script language="JavaScript" src="../resource/common/jquery.min.js?20241121110025137262-2068654386"></script>
+<script language="JavaScript" src="../resource/common/safelogin.js?20241121110025137262-2068654386"></script>
+<script language="JavaScript" type="text/javascript">
+function MD5(str) { return hex_md5(str); }
+function stUserInfo(UserName,HintPassword)
+{
+this.UserName = UserName;
+this.HintPassword = HintPassword;
+}
+
+var APPVersion = '1.1.1.1';
+var HintPasswordInfo;
+var LoginTimes = '0';
+var ModeCheckTimes = '0';
+var ProductName = 'HG8145V5V3';
+var Var_DefaultLang = 'spanish';
+var Var_LastLoginLang = 'spanish';
+var UserInfo = new Array(new stUserInfo("TELMEX","Tijwhj\x26\x26\x26"),null);;
+var UserName = UserInfo[0].UserName;
+var HintPassword = UserInfo[0].HintPassword;
+var Language = '';
+var LockLeftTime = '0';
+var errloginlockNum = '3';
+var locklefttimerhandle;
+var FailStat ='0';
+var IsDefaultPwd = '0';
+var CfgMode ='TELMEX5GV5';
+var defaultString = "WPA KEY";
+
+
+if(Var_LastLoginLang == '')
+{
+Language = Var_DefaultLang;
+}
+else
+{
+Language = Var_LastLoginLang;
+}
+
+
+document.title = ProductName;
+
+
+function showlefttime()
+{
+if(LockLeftTime <= 0)
+{
+window.location="/login.asp";
+return;
+}
+
+if(LockLeftTime == 1)
+{
+if(Language == 'english')
+{
+var errhtml = 'Too many retrials, please retry ' +  LockLeftTime + ' seconds later.';
+}
+else
+{
+var errhtml = 'Ha intentado muchas veces. Vuelva a intentarlo dentro de ' +  LockLeftTime + ' segundo/s.';
+}
+}
+else
+{
+if(Language == 'english')
+{
+var errhtml = 'Too many retrials, please retry ' +  LockLeftTime + ' seconds later.';
+}
+else
+{
+var errhtml = 'Ha intentado muchas veces. Vuelva a intentarlo dentro de ' +  LockLeftTime + ' segundos.';
+}
+}
+
+SetDivValue("DivErrPage", errhtml);
+LockLeftTime = LockLeftTime - 1;
+}
+
+function setErrorStatus()
+{
+var HintPasswordExpand = HintPassword.toString().replace(/ /g,"&nbsp;");
+clearInterval(locklefttimerhandle);
+if('1' == FailStat || (ModeCheckTimes >= errloginlockNum))
+{
+if (Language == 'english')
+{
+var errhtml = "Too many retrials.";
+}
+else
+{
+var errhtml = "Ha intentado muchas veces.";
+}
+
+SetDivValue("DivErrPage", errhtml);
+setDisable('txt_Username',1);
+setDisable('txt_Password',1);
+setDisable('Submit',1);
+}
+else if((LoginTimes > 0) && (LoginTimes < errloginlockNum))
+{
+if (Language == 'english')
+{
+var errhtml = "Incorrect user/password combination. Please try again.";
+}
+else
+{
+var errhtml = "La combinación del usuario/contraseña es incorrecta. Favor de volver a intentarlo.";
+}
+
+SetDivValue("DivErrPage", errhtml);
+}
+else if (LoginTimes >= errloginlockNum && parseInt(LockLeftTime) > 0 )
+{
+if (Language == 'english')
+{
+var errhtml = 'Too many retrials, please retry ' +  LockLeftTime + ' seconds later.';
+var defaulthtml = "The default password of your device is the " + defaultString + ".";
+var hinthtml = "Your hint password is: "+HintPasswordExpand+".";
+}
+else
+{
+var errhtml = 'Ha intentado muchas veces. Vuelva a intentarlo dentro de ' +  LockLeftTime + ' segundos.';
+var defaulthtml = "La contraseña predeterminada es la " + defaultString + " de su equipo.";
+var hinthtml = "El recordatorio de la contraseña es la clave: "+HintPasswordExpand+".";
+}
+
+SetDivValue("DivErrPage", errhtml);
+SetDivValue("DivErrPage2", defaulthtml);
+SetDivValue("DivHintPasswordPage", hinthtml);
+setDisable('txt_Username',1);
+setDisable('txt_Password',1);
+setDisable('Submit',1);
+locklefttimerhandle = setInterval('showlefttime()', 1000);
+}
+else
+{
+document.getElementById('loginfail').style.display = 'none';
+}
+}
+
+
+function SubmitForm() {
+var Username = document.getElementById('txt_Username');
+var Password = document.getElementById('txt_Password');
+var appName = navigator.appName;
+var version = navigator.appVersion;
+
+if (Language == "spanish") {
+if (appName == "Microsoft Internet Explorer")
+{
+var versionNumber = version.split(" ")[3];
+if (parseInt(versionNumber.split(";")[0]) < 6)
+{
+alert("No se puede soportar la versión de IE inferior a la 6.0.");
+return false;
+}
+}
+
+if (Username.value == "") {
+alert("La usuario es un campo obligatorio.");
+Username.focus();
+return false;
+}
+
+if (Password.value == "") {
+alert("La contraseña es un campo requerido.");
+Password.focus();
+return false;
+}
+
+}
+else
+{
+if (appName == "Microsoft Internet Explorer")
+{
+var versionNumber = version.split(" ")[3];
+if (parseInt(versionNumber.split(";")[0]) < 6)
+{
+alert("We cannot support the IE version which is lower than 6.0.");
+return false;
+}
+}
+
+if (Username.value == "") {
+alert("User is a required field.");
+Username.focus();
+return false;
+}
+
+if (Password.value == "") {
+alert("Password is a required field.");
+Password.focus();
+return false;
+}
+
+}
+
+var cnt;
+
+$.ajax({
+type : "POST",
+async : false,
+cache : false,
+url : '/asp/GetRandCount.asp',
+success : function(data) {
+cnt = data;
+}
+});
+
+var Form = new webSubmitForm();
+var cookie2 = "Cookie=body:" + "Language:" + Language + ":" + "id=-1;path=/";
+Form.addParameter('UserName', Username.value);
+Form.addParameter('PassWord', base64encode(Password.value));
+document.cookie = cookie2;
+Username.disabled = true;
+Password.disabled = true;
+Form.addParameter('x.X_HW_Token', cnt);
+Form.setAction('/login.cgi');
+Form.submit();
+return true;
+}
+
+function setUsernameText (sId, sValue)
+{
+var item;
+if (null == (item = document.getElementById(sId)))
+{
+return false;
+}
+
+if(null != sValue)
+{
+sValue = sValue.toString().replace(/&nbsp;/g," ");
+sValue = sValue.toString().replace(/&quot;/g,"\"");
+sValue = sValue.toString().replace(/&gt;/g,">");
+sValue = sValue.toString().replace(/&lt;/g,"<");
+sValue = sValue.toString().replace(/&#39;/g, "\'");
+sValue = sValue.toString().replace(/&#40;/g, "\(");
+sValue = sValue.toString().replace(/&#41;/g, "\)");
+sValue = sValue.toString().replace(/&amp;/g,"&");
+}
+item.value = sValue;
+return true;
+}
+
+function IsIEBrower(num) {
+    var ua = navigator.userAgent.toLowerCase();
+    var isIE = ua.indexOf("msie")>-1;
+    var safariVersion;
+    if(isIE){
+        safariVersion =  ua.match(/msie ([\d.]+)/)[1];
+        var sa = parseInt(safariVersion);
+        if(safariVersion <= num ){
+        if (Language == 'english')
+        {
+        alert("Your browser version is outdated (IE 6, IE 7, and IE 8 are not supported). You must upgrade your browser to IE 9 or later. ");
+        }
+        else
+        {
+        alert("La versión de su navegador está desactualizada (no se soportan IE 6, IE 7 ni IE 8). Debe actualizar el navegador con IE 9 o una versión posterior. ");
+        }
+        }
+    }
+}
+
+function LoadFrame() {
+var UserLeveladmin = '1';
+clearInterval(locklefttimerhandle);
+setUsernameText('txt_Username',UserName);
+document.getElementById('txt_Password').focus();
+
+if (Language == "spanish") {
+document.getElementById('Spanish').style.color = '#9b0000';
+document.getElementById('English').style.color = '#434343';
+document.getElementById('account').innerHTML = 'Usuario';
+document.getElementById('Password').innerHTML = 'Contraseña';
+document.getElementById('button').innerHTML = 'Iniciar sesión';
+document.getElementById('footer').innerHTML = 'Copyright © 2024 Tecnologias Huawei Co., Ltd. Todos los derechos reservados.';
+} else {
+document.getElementById('Spanish').style.color = '#434343';
+document.getElementById('English').style.color = '#9b0000';
+document.getElementById('account').innerHTML = 'User';
+document.getElementById('Password').innerHTML = 'Password';
+document.getElementById('button').innerHTML = 'Login';
+document.getElementById('footer').innerHTML = 'Copyright © 2024 Huawei Technologies Co., Ltd. All rights reserved.';
+}
+
+if ((LoginTimes != null) && (LoginTimes != '') && (LoginTimes > 0)) {
+document.getElementById('loginfail').style.display = '';
+   if(LoginTimes>=errloginlockNum)
+   {
+document.getElementById('hintpwd').style.display = '';
+   }
+
+   setErrorStatus();
+}
+if( "1" == FailStat || (ModeCheckTimes >= errloginlockNum))
+{
+document.getElementById('loginfail').style.display = '';
+if(LoginTimes>=errloginlockNum)
+{
+document.getElementById('hintpwd').style.display = '';
+}
+setErrorStatus();
+}
+
+init();
+
+if((UserLeveladmin == '0'))
+{
+if (Language == "spanish")
+{
+alert("El administrador no puede abrir esta página.");
+return false;
+}
+else
+{
+alert("Administrator is not allowed to open this Web page.");
+return false;
+}
+}
+ }
+
+function init() {
+if (document.addEventListener) {
+document.addEventListener("keypress", onHandleKeyDown, false);
+} else {
+document.onkeypress = onHandleKeyDown;
+}
+}
+function onHandleKeyDown(event) {
+var e = event || window.event;
+var code = e.charCode || e.keyCode;
+
+if (code == 13) {
+SubmitForm();
+}
+}
+function onChangeLanguage(language) {
+Language = language;
+if (language == "spanish") {
+document.getElementById('Spanish').style.color = '#9b0000';
+document.getElementById('English').style.color = '#434343';
+document.getElementById('account').innerHTML = 'Usuario';
+document.getElementById('Password').innerHTML = 'Contraseña';
+document.getElementById('button').innerHTML = 'Iniciar sesión';
+document.getElementById('footer').innerHTML = 'Copyright © 2024 Tecnologias Huawei Co., Ltd. Todos los derechos reservados.';
+} else {
+document.getElementById('Spanish').style.color = '#434343';
+document.getElementById('English').style.color = '#9b0000';
+document.getElementById('account').innerHTML = 'User';
+document.getElementById('Password').innerHTML = 'Password';
+document.getElementById('button').innerHTML = 'Login';
+document.getElementById('footer').innerHTML = 'Copyright © 2024 Huawei Technologies Co., Ltd. All rights reserved.';
+}
+
+if (((LoginTimes != null) && (LoginTimes != '') && (LoginTimes > 0))
+||( "1" == FailStat) || (ModeCheckTimes >= errloginlockNum) )
+{
+document.getElementById('loginfail').style.display = '';
+setErrorStatus();
+}
+}
+</script>
+</head>
+<body onLoad="LoadFrame();">
+<div id="main_wrapper">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+  <td align="center" height="170" valign="bottom">
+  <table border="0" cellpadding="0" cellspacing="0" width="36%">
+  <tr>
+  <script language="JavaScript" type="text/javascript">
+            if ((CfgMode.toUpperCase() != 'TELMEXVULA') &&
+                (CfgMode.toUpperCase() != 'TELMEXACCESS') &&
+                (CfgMode.toUpperCase() != 'TELMEXACCESSNV') && 
+                (CfgMode.toUpperCase() != 'TELMEXRESALE')) {
+                var htmlheadlog = '<td align="center" width="29%"> <img height="35" src="images/logo_telmex.gif" width="150" alt=""> </td>';
+                document.write(htmlheadlog);
+            } else {
+                var htmlheadlog = '<td align="center" width="29%"> <img height="75" src="images/logodefault.gif" width="70" alt=""> </td>';
+                document.write(htmlheadlog);
+            }
+            </script>
+<td class="hg_logo" width="21%" id="hg_logo" nowrap> <script language="JavaScript" type="text/javascript">document.write(ProductName);</script> </td>
+<td valign="bottom" width="50%">
+ <table border="0" cellpadding="0" cellspacing="0" class="text_copyright" width="100%">
+<tr>
+  <td width="47%" nowrap> <a id="English" href="#" name="English" onClick="onChangeLanguage('english');" title="English" style="font-size:12px;font-family:Arial;">[English]</a> </td>
+  <td width="53%" nowrap> <a id="Spanish" href="#" name="Spanish" onClick="onChangeLanguage('spanish');" title="Español" style="font-size:12px;font-family:Arial;">[Español]</a> </td>
+</tr>
+  </table>
+</td>
+  </tr>
+</table>
+</td>
+</tr>
+
+   <tr>
+<td align="center">
+<table border="0" cellpadding="0" cellspacing="0" height="40" width="490" style="background-color: none">
+<tr>
+<td valign="top" style="padding-top: 0px;">
+<div id="hintpwd" style="display: none">
+<table border="0" cellpadding="0" cellspacing="5" height="33" width="99%">
+<tr>
+<td align="center" bgcolor="#FFFFFF" height="21"><span style="color:red;font-size:12px;font-family:Arial;"><div id="DivHintPasswordPage"></div></span></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+  </table>
+</td>
+ </tr>
+
+<tr>
+      <td align="center" height="65"> <table border="0" cellpadding="0" cellspacing="0" class="tblcalss" height="65" width="45%" style="font-size:16px;"> 
+  <tr>
+<td class="whitebold" height="37" align="right" width="20%" id="account">User</td>
+<td class="whitebold" height="37" align="center" width="2%">:</td>
+<td width="78%" align="left"> <input style="font-size:12px;font-family:Tahoma,Arial;" id="txt_Username" class="input_login" name="txt_Username" type="text" maxlength="32"> </td>
+  </tr>
+  <tr>
+<td class="whitebold" height="28" align="right" id="Password">Password</td>
+<td class="whitebold" height="28" align="center" >:</td>
+<td align="left"> <input style="font-size:12px;font-family:Tahoma,Arial;" id="txt_Password" class="input_login" name="txt_Password" type="password" maxlength="127" autocomplete="off"> &nbsp;
+  <button style="font-size:12px;font-family:Tahoma,Arial;" id="button" class="submit" name="Submit" onClick="SubmitForm();" type="button">Login</button></td>
+  </tr>
+</table></td>
+</tr>
+<tr>
+  <td class="info_text" height="25" id="footer">Copyright © 2024 Huawei Technologies Co., Ltd. All rights reserved. </td>
+</tr>
+<tr>
+  <td align="center"> <table border="0" cellpadding="0" cellspacing="0" height="300" width="490" style="background: url('images/pic.jpg') no-repeat center;">
+  <tr>
+<td valign="top" style="padding-top: 20px;"> <div id="loginfail" style="display: none">
+<table border="0" cellpadding="0" cellspacing="5" height="33" width="99%">
+  <tr>
+<td align="center" bgcolor="#FFFFFF" height="21"> <span style="color:red;font-size:12px;font-family:Arial;">
+  <div id="DivErrPage"></div>
+  </span> </td>
+  </tr>
+  <script>
+  if (LoginTimes >= errloginlockNum && IsDefaultPwd==1)
+  {
+  document.write("<tr>");
+  document.write('<td align="center" bgcolor="#FFFFFF" height="21">');
+  document.write('<span style="color:red;font-size:12px;font-family:Arial;">');
+  document.write('<div id="DivErrPage2">'+'</div>');
+  document.write('</span>');
+  document.write("</tr>");
+  }
+  </script>
+</table>
+  </div></td>
+  </tr>
+</table></td>
+</tr>
+
+  </table>
+</div>
+</body>
+</html>
