@@ -68,7 +68,7 @@ var htmlhead = '<div id="headerLogoImg" style="background: url(../images/banner_
 document.write(htmlhead);
 }
 </script>
-     
+     <td class="per_8_15" bindtext="bbsp_devtype">Tipo de equipo</td>
     <div id="headerContent"> 
       <div id="headerInfo"> 
         <div id="headerTitle"></div> 
