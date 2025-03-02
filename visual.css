@@ -1,0 +1,733 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="awa-expId" content="vscw_aaflight1016_control:103441;" />
+	<meta name="awa-env" content="prod" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="google-site-verification" content="hNs7DXrTySP_X-0P_AC0WulAXvUwgSXEmgfcO2r79dw" />
+
+	<!-- Twitter and Facebook OpenGraph Metadata-->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@code" />
+
+	<meta name="description"
+    content="Visual Studio Code redefines AI-powered coding with GitHub Copilot for building and debugging modern web and cloud applications. Visual Studio Code is free and available on your favorite platform - Linux, macOS, and Windows." />
+<meta name="msvalidate.01" content="D7003A550372D1205E5408F00BF1923B" />
+<!-- Twitter and Facebook OpenGraph Metadata-->
+<meta property="og:title" content="Visual Studio Code - Code Editing. Redefined" />
+<meta property="og:description"
+    content="Visual Studio Code redefines AI-powered coding with GitHub Copilot for building and debugging modern web and cloud applications. Visual Studio Code is free and available on your favorite platform - Linux, macOS, and Windows." />
+<meta property="og:image" content="https://code.visualstudio.com/opengraphimg/opengraph-home.png" />
+<meta property="og:url" content="https://code.visualstudio.com/" />
+<link href="https://code.visualstudio.com" rel="canonical" />
+<link rel="preload" href="/assets/home/hero-poster-light.webp" as="image" type="image/webp"
+    media="(prefers-color-scheme: light)">
+<link rel="preload" href="/assets/home/hero-poster-dark.webp" as="image" type="image/webp"
+    media="(prefers-color-scheme: dark)">
+
+
+	<link rel="shortcut icon" href="/assets/favicon.ico" sizes="128x128" />
+	<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+	<title>Visual Studio Code - Code Editing. Redefined</title>
+
+	<link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/dist/v2/style.css">
+
+	<script src="https://consentdeliveryfd.azurefd.net/mscc/lib/v2/wcp-consent.js"></script>
+	<script type="text/javascript" src="https://js.monitor.azure.com/scripts/c/ms.analytics-web-4.min.js"></script>
+	
+	<script type="text/javascript">
+	// Leave as var; siteConsent is initialized and referenced elsewhere.
+	var siteConsent = null;
+	
+	const GPC_DataSharingOptIn = false;
+	WcpConsent.onInitCallback(function () {
+		window.appInsights = new oneDS.ApplicationInsights();
+		window.appInsights.initialize({
+			instrumentationKey: "1a3eb3104447440391ad5f2a6ee06a0a-62879566-bc58-4741-9650-302bf2af703f-7103",
+			propertyConfiguration: {
+				userConsented: false,
+				gpcDataSharingOptIn: false,
+				callback: {
+					userConsentDetails: siteConsent ? siteConsent.getConsent : undefined
+				},
+			},
+			cookieCfg: {
+				ignoreCookies: ["MSCC"]
+			},
+			webAnalyticsConfiguration:{ // Web Analytics Plugin configuration
+				urlCollectQuery: true,
+				urlCollectHash: true,
+				autoCapture: {
+					scroll: true,
+					pageView: true,
+					onLoad: true,
+					onUnload: true,
+					click: true,
+					resize: true,
+					jsError: true
+				}
+			}
+		}, []);
+	
+		window.appInsights.getPropertyManager().getPropertiesContext().web.gpcDataSharingOptIn = GPC_DataSharingOptIn;
+	});
+	</script>
+	<link rel="alternate" type="application/atom+xml" title="RSS Feed for code.visualstudio.com" href="/feed.xml" />
+</head>
+
+<body  class="home">
+	<!-- Setting theme here to avoid FOUC -->
+	<script>
+		function setTheme(themeName) {
+			if (themeName === 'dark') {
+				document.documentElement.removeAttribute('data-theme'); // dark is default, so no data-theme attribute needed
+			}
+
+			if (themeName === 'light') {
+				document.documentElement.setAttribute('data-theme', themeName);
+			}
+			return;
+		}
+
+		// Determine initial theme: user preference or system preference
+		let theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+		setTheme(theme); // Apply the initial theme
+
+		// Listen for changes in the system theme preference
+		window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+			if (!localStorage.getItem('theme')) { // Only if no user preference is saved
+				setTheme(e.matches ? 'dark' : 'light');
+			}
+		});
+	</script>
+
+	<div id="main">
+		<div class="navbar-fixed-container">
+			<div class="navbar navbar-inverse navbar-fixed-top " data-spy="affix" data-offset-top="1">
+				<div id='cookie-banner'></div>		<nav role="navigation" aria-label="Top Level">
+					<div class="container">
+						<div class="nav navbar-header">
+							<a class="navbar-brand" href="/"><span>Visual Studio Code</span></a>
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Expand and Collapse Menu">
+			                    <span class="icon-bar"></span>
+			                    <span class="icon-bar"></span>
+			                    <span class="icon-bar"></span>
+				    		</button>
+			            </div>
+			            <div class="navbar-collapse collapse">
+							<ul class="nav navbar-nav navbar-left">
+								<li ><a id="nav-docs" href="/docs">Docs</a></li>
+								<li ><a id="nav-updates" href="/updates">Updates</a></li>
+								<li ><a id="nav-blogs" href="/blogs">Blog</a></li>
+								<li ><a id="nav-extend" href="/api">API</a></li>
+								<li><a href="https://marketplace.visualstudio.com/VSCode" target="_blank" rel="noopener" id="nav-extensions">Extensions</a></li>
+								<li ><a id="nav-faqs" href="/docs/supporting/faq">FAQ</a></li>
+								<li class='search visible-xs visible-sm'
+									><a href="/Search">Search</a></li>
+								<li ><a id="nav-copilot" href="/docs/copilot/overview">GitHub Copilot</a></li>
+							</ul>
+			                </ul>
+		
+							<ul class="nav navbar-nav navbar-right" role="presentation">
+								<li>
+									<button type="button" class="theme-switch" id="theme-toggle">
+										<img class="theme-icon-light" src="/assets/icons/theme-light.svg" alt="Switch to the dark theme" />
+										<img class="theme-icon-dark" src="/assets/icons/theme-dark.svg" alt="Switch to the light theme" />
+									</button>
+								</li>
+								<li>
+									<a href="/Search" title="Search" class="btn search-btn" id="nav-search">
+										<img class="search-icon-light" src="/assets/icons/search.svg" width="16px" height="16px" alt="Search" />
+										<img class="search-icon-dark" src="/assets/icons/search-dark.svg" width="16px" height="16px" alt="Search" />
+									</a>
+								</li>
+								<li class="search" role="presentation">
+									<form class="nav-search search-form" role="search" aria-label="Search">
+										<div class="input-group" role="presentation">
+											<input type="text" name="q" class="search-box form-control" placeholder="Search Docs" aria-label="Search text"/>
+											<span class="input-group-btn">
+												<button tabindex="0" class="btn" type="submit" aria-label="Search">
+													<img class="search-icon-dark" src="/assets/icons/search-dark.svg" alt="Search" />
+													<img class="search-icon-light" src="/assets/icons/search.svg" alt="Search" />
+												</button>
+											</span>
+										</div>
+									</form>						</li>
+								<!-- this was hiden in the home and download page, keeping it for now -->
+								<li><a class="link-button" href="/Download" id="nav-download">
+								<span>Download</span></a></li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>		<div class="updates-banner home ">
+			<div class="container">
+		        <p class="message">🚀 Get <a class="copilot-deep-link" href="vscode://github.copilot-chat?referrer=vscode-updatebanner" id="banner-link-updates" rel="noopener">GitHub Copilot Free</a> in VS Code!</p>
+		
+			</div>
+			<div tabindex="0" role="button" title="Dismiss this update" class="dismiss-btn" id="banner-dismiss-btn"><span class="sr-only">Dismiss this update</span><span aria-hidden="true" class="glyph-icon"></span></div>
+		</div>		<!-- This div wraps around the entire site -->
+		<!-- The body itself should already have a main tag -->
+		<div id="main-content">
+			<div class="container home">
+    <section class="hero-content col-sm-12">
+        <div class="hero-text">
+            <h1>Your code editor. Redefined with AI.</h1>
+            <div class="download-content-wrapper">
+                <div id="download-buttons" class="download-hero alt-downloads">
+                    <!-- Download for user's current OS -->
+                    <div class="primary-buttons">
+                        <button type="button" class="link-button dlink" data-os="osx" id="download-buttons-osx">Download for macOS</button>
+                        <button type="button" class="link-button dlink" data-os="win" id="download-buttons-win">Download for Windows</button>
+                        <div class="linux">
+                            <button type="button" class="link-button dlink deb-btn" data-os="linux64_deb" id="download-linux64_deb" id="download-buttons-linux64_deb"><img src="/assets/icons/download.svg" width="18px" height="18px" alt="Download VS Code"/>.deb<small>Debian, Ubuntu...</small></button>
+                            <button type="button" class="link-button dlink rpm-btn" data-os="linux64_rpm_repo" id="download-linux64_rpm_repo" id="download-buttons-linux64_rpm_repo"><img src="/assets/icons/download.svg" width="18px" height="18px" alt="Download VS Code"/>.rpm<small>Red Hat, Fedora...</small></button>
+                            <div class="collapse" id="linux32-downloads-insiders">
+                                <ul class="list-unstyled text-center">
+                                    <li><a class="dlink" data-os="linux32_deb" id="download-buttons-linux32_deb"><strong>.deb</strong> (x86)</a></li>
+                                    <li><a class="dlink" data-os="linux32_rpm" id="download-buttons-linux32_rpm"><strong>.rpm</strong> (x86)</a></li>
+                                    <li><a class="dlink" data-os="linux32" id="download-buttons-linux32"><strong>.tar.gz</strong> (x86)</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button type="button" class="link-button dlink other-os" href="/Download">Download<small class="build-type">Stable Build</small></button>
+                        <a class="link-button secondary copilot-deep-link" href="vscode://github.copilot-chat?referrer=vscode-cta" rel="noopener">Get Copilot Free</a>
+                    </div>
+                </div>
+                <p id="download-matrix-label" class="hero-alt-download-links"><a href="https://vscode.dev/" target="_blank" rel="noopener" title="For quick code edits locally or remotely on GitHub and Azure Repos." id="download-buttons-web">Web</a>, <a href="/insiders" id="download-buttons-insiders">Insiders edition</a>, or <a href="/Download">other platforms</a></p>
+                <p class="terms">By using VS Code, you agree to its <span class="wrap-together"><a href="https://code.visualstudio.com/license" target="_blank" rel="noopener" title="View the Visual Studio Code license.">license</a> and <a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener" title="View the Microsoft privacy statement.">privacy statement</a>.</span></p>
+            </div>        </div>
+        <div class="hero-video-container" role="img"
+            aria-label="A demonstration animation of VS Code using Copilot Chat, Copilot Edits, Inline Chat, and AI-assisted commit message generation to create and refine a Wordle clone web app built with React and Vite.">
+            <video width="1008" height="639" id="hero-video-dark" class="hero-video dark"
+                poster="/assets/home/hero-poster-dark.webp" playsinline autoplay muted>
+                <source src="/assets/home/hero-dark-sm.webm" type="video/webm" media="(max-width: 991px)">
+                <source src="/assets/home/hero-dark-sm.mp4" type="video/mp4" media="(max-width: 991px)">
+                <source src="/assets/home/hero-dark-lg.webm" type="video/webm">
+                <source src="/assets/home/hero-dark-lg.mp4" type="video/mp4">
+            </video>
+            <video width="1008" height="639" id="hero-video-light" class="hero-video light"
+                poster="/assets/home/hero-poster-light.webp" playsinline autoplay muted>
+                <source src="/assets/home/hero-light-sm.webm" type="video/webm" media="(max-width: 991px)">
+                <source src="/assets/home/hero-light-sm.mp4" type="video/mp4" media="(max-width: 991px)">
+                <source src="/assets/home/hero-light-lg.webm" type="video/webm">
+                <source src="/assets/home/hero-light-lg.mp4" type="video/mp4">
+            </video>
+            <img width="1240" height="831" role="presentation" src="/assets/home/hero-background.webp" alt="">
+        </div>
+        <div class="video-control">
+            <button id="hero-video-button" aria-pressed="false"
+                aria-label="Hero animation is currently playing. Click to pause.">
+                Pause
+            </button>
+        </div>
+        <script>
+            const videoDark = document.querySelector("#hero-video-dark");
+            const videoLight = document.querySelector("#hero-video-light");
+            const button = document.querySelector("#hero-video-button");
+            button.addEventListener("click", () => {
+                if (videoDark.paused) {
+                    videoDark.play();
+                    videoLight.play();
+                    button.textContent = "Pause";
+                    button.ariaPressed = "false";
+                    button.ariaLabel = "Hero animation is currently playing. Click to pause.";
+                } else {
+                    videoDark.pause();
+                    videoLight.pause();
+                    // Ensure videos do not get out sync (always syncs to the time of the currently visible video)
+                    if (localStorage.getItem('theme') === "dark") {
+                        videoLight.currentTime = videoDark.currentTime;
+                    } else {
+                        videoDark.currentTime = videoLight.currentTime;
+                    }
+                    button.textContent = "Play";
+                    button.ariaPressed = "true";
+                    button.ariaLabel = "Hero animation is paused. Click to play.";
+                }
+            });
+            videoDark.addEventListener("ended", () => {
+                videoDark.currentTime = 0;
+                button.textContent = "Replay";
+                button.ariaPressed = "true";
+                button.ariaLabel = "Hero animation has ended. Click to replay.";
+            });
+            videoLight.addEventListener("ended", () => {
+                videoLight.currentTime = 0;
+                button.textContent = "Replay";
+                button.ariaPressed = "true";
+                button.ariaLabel = "Hero animation has ended. Click to replay.";
+            });
+        </script>
+    </section>
+</div>
+
+<div class="container">
+    <section class="swimlane row three-col-features">
+        <div class="three-col-content">
+            <div class="col-sm-4 col-lg-4">
+                <div class="three-col-card">
+                    <h2>Choose the model that works for you</h2>
+                    <p>Pick the model that works best for your project and team, including
+                        GPT 4o and Claude Sonnet.</p>
+                    <div>
+                        <img src="/assets/home/choose-model-dark.webp" class="swimlane-image dark" loading="lazy"
+                            alt="Dropdown menu in GitHub Copilot Chat displaying AI model options: 'GPT 4o' selected, with other options like 'Claude 3.5 Sonnet (Preview)', 'Gemini 2.0 Flash (Preview)', and 'o3-mini (Preview)'">
+                        <img src="/assets/home/choose-model-light.webp" class="swimlane-image light" loading="lazy"
+                            alt="Dropdown menu in GitHub Copilot Chat displaying AI model options: 'GPT 4o' selected, with other options like 'Claude 3.5 Sonnet (Preview)', 'Gemini 2.0 Flash (Preview)', and 'o3-mini (Preview)'">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4 col-lg-4">
+                <div class="three-col-card">
+                    <h2>An expert on your codebase</h2>
+                    <p>Copilot locally indexes your codebase to understand what’s relevant
+                        and supplements that context to interactions with Copilot.</p>
+                    <div>
+                        <img src="/assets/home/multi-file-dark.webp" class="swimlane-image dark" loading="lazy"
+                            alt="VS Code Copilot Edits prompt input with a working set of two files. The prompt message mentions #codebase and #file:HistoryView.swift for context.">
+                        <img src="/assets/home/multi-file-light.webp" class="swimlane-image light" loading="lazy"
+                            alt="VS Code Copilot Edits prompt input with a working set of two files. The prompt message mentions #codebase and #file:HistoryView.swift for context.">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-lg-4">
+                <div class="three-col-card">
+                    <h2>Personalized to your needs</h2>
+                    <p>Copilot works the way you do. Customize Copilot's prompts with
+                        details about your team's workflows, tools, and projects.</p>
+                    <div>
+                        <img src="/assets/home/instructions-dark.webp" class="swimlane-image dark" loading="lazy"
+                            alt="Settings JSON for copilot instructions, the first set to `use React functional components', then including another file for extra instructions 'code-style.md'.">
+                        <img src="/assets/home/instructions-light.webp" class="swimlane-image light" loading="lazy"
+                            alt="Settings JSON for copilot instructions, the first set to `use React functional components', then including another file for extra instructions 'code-style.md'.">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="swimlane row">
+        <div class="copilot-free-banner">
+            <div class="col-sm-6 col-lg-6">
+                <h2>Activate Copilot Free in Visual Studio Code</h2>
+            </div>
+            <div class="col-sm-6 col-lg-6">
+                <p>No trial. No credit card required. Just your GitHub account.</p>
+                <a class="link-button secondary copilot-deep-link"
+                    href="vscode://github.copilot-chat?referrer=vscode-mainbanner" rel="noopener">Get
+                    Copilot Free</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="swimlane row">
+        <div class="swimlane-content">
+            <div class="col-sm-6 col-lg-4">
+                <div class="secondary-value-prop">
+                    <h2>Multi-file edits</h2>
+                    <p>Describe what you want to build in natural language, and Copilot Edits takes care of the rest.
+                        Copilot Edits makes changes across files in your codebase with a UI designed for rapid
+                        iteration. It's the fastest way to add new functionality to your apps.</p>
+                    <a href="https://code.visualstudio.com/docs/copilot/copilot-edits" rel="noopener">Build with Copilot
+                        Edits</a>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-8">
+                <img src="/assets/home/swimlane-chat-dark.webp" class="swimlane-image dark" loading="lazy"
+                    alt="VS Code window showing a code editor with projects.tsx open, alongside a Copilot Edits panel. The chat discusses modifications to make each project a link and add dynamic pages. Two files, projects.tsx and [slug].tsx, are in the working set, with GitHub Copilot suggesting edits.">
+                <img src="/assets/home/swimlane-chat-light.webp" class="swimlane-image light" loading="lazy"
+                    alt="VS Code window showing a code editor with projects.tsx open, alongside a Copilot Edits panel. The chat discusses modifications to make each project a link and add dynamic pages. Two files, projects.tsx and [slug].tsx, are in the working set, with GitHub Copilot suggesting edits.">
+            </div>
+        </div>
+    </section>
+
+    <section class="swimlane row">
+        <div class="swimlane-content">
+            <div class="col-sm-6 col-lg-4">
+                <div class="value-prop-intro">
+                    <h2>Code suggestions</h2>
+                    <p>Copilot predicts your next thought with Next Edit Suggestions. Use the Tab key to accept AI-powered
+                        suggestions right in your editor. Next Edit Suggestions will intelligently suggest where and what to change across your file based
+                        on the edits you're making.</p>
+                    <a href="https://code.visualstudio.com/docs/copilot/ai-powered-suggestions" rel="noopener">Pair
+                        program with Copilot</a>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-8">
+                <img src="/assets/home/swimlane-nes-dark.webp" class="swimlane-image dark" loading="lazy"
+                    alt="Code editor showing a JavaScript file post.js. It defines a render method that renders a social media post by calling an external API. Next Edit Suggestions is suggesting how to complete the implementation.">
+                <img src="/assets/home/swimlane-nes-light.webp" class="swimlane-image light" loading="lazy"
+                    alt="Code editor showing a JavaScript file post.js. It defines a render method that renders a social media post by calling an external API. Next Edit Suggestions is suggesting how to complete the implementation.">
+            </div>
+        </div>
+    </section>
+
+    <section class="extensions-container row">
+        <div class="extensions-container-content row">
+            <div class="col-sm-6 col-lg-4">
+                <h2>Code with extensions</h2>
+                <p>Extensions let you customize VS Code and Copilot with AI-powered features grounded securely in your
+                    team's data and workflows. Grab one from the gallery and add it to chat like @azure, or <a
+                        href="https://code.visualstudio.com/docs/copilot/copilot-extensibility-overview"
+                        rel="noopener">build your own Copilot extension</a> to power your team's unique scenarios.
+                </p>
+            </div>
+            <div class="col-sm-6 col-lg-8">
+                <div class="extensions-grid-container">
+                    <div class="extensions-grid">
+                        <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python" target="_blank"
+                            rel="noopener" class="extension-tile">
+                            <img src="/assets/images/python-extension.png" loading="lazy" alt="Python extension icon">
+                            <div class="extension-tile-details">
+                                <h3>Python</h3>
+                                <p>Adds rich language support for Python</p>
+                            </div>
+                        </a>
+                        <a href="https://marketplace.visualstudio.com/items?itemName=Stripe.vscode-stripe"
+                            target="_blank" rel="noopener" class="extension-tile">
+                            <img src="/assets/images/stripe-extension.png" loading="lazy" alt="Stripe extension icon">
+                            <div class="extension-tile-details">
+                                <h3>Stripe</h3>
+                                <p>Build, test, and use Stripe inside your editor</p>
+                            </div>
+                        </a>
+                        <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools" target="_blank"
+                            rel="noopener" class="extension-tile">
+                            <img src="/assets/images/c-extension.png" loading="lazy" alt="C/C extension icon">
+                            <div class="extension-tile-details">
+                                <h3>C/C++</h3>
+                                <p>Adds rich language support for C/C++</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="extensions-grid">
+                        <a href="https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter" target="_blank"
+                            rel="noopener" class="extension-tile">
+                            <img src="/assets/images/jupyter-extension.png" loading="lazy" alt="Jupyter extension icon">
+                            <div class="extension-tile-details">
+                                <h3>Jupyter</h3>
+                                <p>Language support for Jupyter Notebooks</p>
+                            </div>
+                        </a>
+                        <a href="https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens" target="_blank"
+                            rel="noopener" class="extension-tile">
+                            <img src="/assets/images/gitlens-extension.png" loading="lazy" alt="GitLens extension icon">
+                            <div class="extension-tile-details">
+                                <h3>GitLens</h3>
+                                <p>Supercharge your Git experience</p>
+                            </div>
+                        </a>
+                        <a href="https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit"
+                            target="_blank" rel="noopener" class="extension-tile">
+                            <img src="/assets/images/cs-dev-kit-extension.png" loading="lazy"
+                                alt="C# Dev Kit extension icon">
+                            <div class="extension-tile-details">
+                                <h3>C# Dev Kit</h3>
+                                <p>Powerful tools for your C# environment</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="extensions-grid">
+                        <a href="https://marketplace.visualstudio.com/items?itemName=mongodb.mongodb-vscode"
+                            target="_blank" rel="noopener" class="extension-tile">
+                            <img src="/assets/images/mongodb-extension.png" loading="lazy" alt="MongoDB extension icon">
+                            <div class="extension-tile-details">
+                                <h3>MongoDB</h3>
+                                <p>Extension for the @MongoDB agent</p>
+                            </div>
+                        </a>
+                        <a href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azure-github-copilot"
+                            target="_blank" rel="noopener" class="extension-tile">
+                            <img src="/assets/images/azure.png" loading="lazy"
+                                alt="GitHub Copilot for Azure extension icon">
+                            <div class="extension-tile-details">
+                                <h3>GitHub Copilot for Azure</h3>
+                                <p>Streamline the process of developing for Azure</p>
+                            </div>
+                        </a>
+                        <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack"
+                            target="_blank" rel="noopener" class="extension-tile">
+                            <img src="/assets/images/remote-extension.png" loading="lazy"
+                                alt="Remote Development extension icon">
+                            <div class="extension-tile-details">
+                                <h3>Remote Development</h3>
+                                <p>Open folders in a container on a remote machine</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="extensions-grid-caption">
+                    <p>View 60k+ extensions in the <a href="https://marketplace.visualstudio.com/vscode" rel="noopener"
+                            target="_blank">Extension Marketplace</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="swimlane row">
+        <div class="swimlane-content">
+            <div class="col-sm-6 col-lg-4">
+                <div class="value-prop-intro">
+                    <h2>Code in any language</h2>
+                    <p>VS Code supports almost every major programming language. Several ship in the box, like
+                        JavaScript,
+                        TypeScript, CSS, and HTML, but extensions for others can be found in the VS Code Marketplace.
+                    </p>
+                </div>
+            </div>
+            <div class="languages col-sm-6 col-lg-8">
+                <div><img src="/assets/home/language-js.png" alt="JavaScript icon"><code>JavaScript</code></div>
+                <div><img src="/assets/home/language-ts.png" alt="TypeScript icon"><code>TypeScript</code></div>
+                <div><img src="/assets/home/language-python.png" alt="Python icon"><code>Python</code></div>
+                <div><img src="/assets/home/language-cs.png" alt="C# icon"><code>C#</code></div>
+                <div><img src="/assets/home/language-cpp.png" alt="C++ icon"><code>C++</code></div>
+                <div><img src="/assets/home/language-html.png" alt="HTML icon"><code>HTML</code></div>
+                <div><img src="/assets/home/language-java.png" alt="Java icon"><code>Java</code></div>
+                <div><img src="/assets/home/language-json.png" alt="JSON icon"><code>JSON</code></div>
+                <div><img src="/assets/home/language-php.png" alt="PHP icon"><code>PHP</code></div>
+                <div><img src="/assets/home/language-markdown.png" alt="Markdown icon"><code>Markdown</code></div>
+                <div><img src="/assets/home/language-powershell.png" alt="Powershell icon"><code>Powershell</code></div>
+                <div><img src="/assets/home/language-yaml.png" alt="YAML icon"><code>YAML</code></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="swimlane row fully-customizable-swimlane">
+        <div class="swimlane-content">
+            <div class="col-sm-6 col-lg-4">
+                <div class="value-prop-intro">
+                    <h2>Fully customizable</h2>
+                    <p>Customize your VS Code UI and layout so that it fits your coding style.</p>
+                </div>
+                <div class="secondary-value-prop">
+                    <p><a href="https://code.visualstudio.com/docs/getstarted/themes" rel="noopener">Color themes</a>
+                        let you modify the colors in VS Code's user interface to suit your preferences and work
+                        environment.</p>
+                </div>
+                <div class="secondary-value-prop">
+                    <p><a href="https://code.visualstudio.com/docs/getstarted/settings#_settings-sync" rel="noopener"
+                            class="value-prop-bold">Settings Sync</a> enables you to share your user settings across
+                        your VS Code instances with the Settings Sync feature.</p>
+                </div>
+                <div class="secondary-value-prop">
+                    <p><a href="https://code.visualstudio.com/docs/editor/profiles" rel="noopener"
+                            class="value-prop-bold">Profiles</a> let you create sets of customizations and quickly
+                        switch between them or share them with others.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-8">
+                <img src="/assets/home/swimlane-customized.png" class="swimlane-image dark" loading="lazy"
+                    alt="Selecting the GitHub Dark theme with a quick pick">
+                <img src="/assets/home/swimlane-customized-light.png" class="swimlane-image light" loading="lazy"
+                    alt="Selecting the GitHub Dark theme with a quick pick">
+            </div>
+        </div>
+    </section>
+
+    <section class="swimlane row code-anywhere-swimlane">
+        <div class="swimlane-content">
+            <div class="col-sm-6 col-lg-4">
+                <div class="value-prop-intro">
+                    <h2>Code anywhere</h2>
+                    <p>Code wherever you're most productive, whether you're connected to the cloud, a remote repository,
+                        or in the browser with VS Code for the Web (vscode.dev).</p>
+                </div>
+                <div class="secondary-value-prop">
+                    <p><a href="https://code.visualstudio.com/docs/sourcecontrol/overview" rel="noopener">Built-in
+                            Source Control</a> empowers you with Git support out-of-the-box. Many other source control
+                        providers are available through extensions.</p>
+                </div>
+                <div class="secondary-value-prop">
+                    <p><a href="https://code.visualstudio.com/docs/remote/codespaces" rel="noopener"
+                            class="value-prop-bold">GitHub Codespaces</a> provides cloud-powered development
+                        environments for any activity - whether it's a long-term project, or a short-term task like
+                        reviewing a pull request.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-8">
+                <img src="/assets/home/swimlane-anywhere.png" class="swimlane-image dark" loading="lazy"
+                    alt="vscode.dev in an Edge browser tab">
+                <img src="/assets/home/swimlane-anywhere-light.png" class="swimlane-image light" loading="lazy"
+                    alt="vscode.dev in an Edge browser tab">
+            </div>
+        </div>
+    </section>
+
+    <section class="rich-features row">
+        <div class="secondary-tagline col-sm-12">
+            <h2>Code with rich features</h2>
+            <p>There's a lot more to an editor. Whether it's using built-in features or rich extensions, there's
+                something for everyone.</p>
+        </div>
+        <div class="feature-grid col-sm-12">
+            <a href="https://code.visualstudio.com/docs/terminal/basics" class="feature-card">
+                <img src="/assets/icons/codicon-terminal.svg" alt="terminal icon">
+                <h3 class="feature-card-title">Integrated terminal</h3>
+                <p>Use your favorite shell whether it's zsh, pwsh, or git bash, all inside the editor.
+                </p>
+            </a>
+            <a href="https://code.visualstudio.com/docs/editor/debugging" class="feature-card">
+                <img src="/assets/icons/codicon-debug.svg" alt="debug icon">
+                <h3 class="feature-card-title">Run code</h3>
+                <p>Run and debug your code without leaving your editor.</p>
+            </a>
+            <a href="https://code.visualstudio.com/docs/sourcecontrol/overview" class="feature-card">
+                <img src="/assets/icons/codicon-version-control.svg" alt="branching icon">
+                <h3 class="feature-card-title">Version control</h3>
+                <p>Built-in support for git and many other source control providers.</p>
+            </a>
+            <a href="https://code.visualstudio.com/docs/editor/tasks" class="feature-card">
+                <img src="/assets/icons/codicon-build-tasks.svg" alt="tools icon">
+                <h3 class="feature-card-title">Build tasks</h3>
+                <p>Run tools and analyze their results from within VS Code.</p>
+            </a>
+            <a href="https://code.visualstudio.com/updates/v1_66#_local-history" class="feature-card">
+                <img src="/assets/icons/codicon-local-history.svg" alt="history icon">
+                <h3 class="feature-card-title">Local history</h3>
+                <p>Never lose your changes with automatically tracked local history.</p>
+            </a>
+            <a href="https://code.visualstudio.com/docs/getstarted/themes" class="feature-card">
+                <img src="/assets/icons/codicon-themes.svg" alt="palette icon">
+                <h3 class="feature-card-title">Themes</h3>
+                <p>Your theme is an extension of your personality. Add some flair to your editor and add your touch.</p>
+            </a>
+            <a href="https://code.visualstudio.com/docs/editor/accessibility" class="feature-card">
+                <img src="/assets/icons/codicon-accessibility.svg" alt="keyboard icon">
+                <h3 class="feature-card-title">Accessibility</h3>
+                <p>Optimized experience for screen readers, high contrast themes, and keyboard-only navigation.</p>
+            </a>
+            <a href="https://code.visualstudio.com/docs/editor/vscode-web" class="feature-card">
+                <img src="/assets/icons/codicon-web.svg" alt="globe icon">
+                <h3 class="feature-card-title">Web support</h3>
+                <p>Whether you are on your phone, tablet, or desktop, you can access your code from anywhere.</p>
+            </a>
+        </div>
+    </section>
+</div>
+
+
+</div>
+		</div>
+	</div>
+
+	<footer role="contentinfo" class="container">
+		<div class="footer-container">
+			<div class="footer-row">
+				<div class="footer-social">
+					<ul class="links">
+						<li>
+							<a href="https://go.microsoft.com/fwlink/?LinkID=533687"><img src="/assets/icons/x-icon.svg" class="x-icon" alt="Follow us on X"></a>
+						</li>
+						<li>
+							<a href="https://github.com/microsoft/vscode"><img src="/assets/icons/github-icon.svg" alt="VS Code on Github"></a>
+						</li>
+						<li>
+							<a href="https://www.youtube.com/@code"><img src="/assets/icons/youtube-icon.svg" alt="VS Code on YouTube"></a>
+						</li>
+						<script>
+							function manageConsent() {
+								if (siteConsent && siteConsent.isConsentRequired) {
+									siteConsent.manageConsent();
+								}
+							}
+						</script>
+					</ul>
+					<a id="footer-microsoft-link" class="microsoft-logo" href="https://www.microsoft.com">
+						<img src="/assets/icons/microsoft.svg" alt="Microsoft homepage" />
+					</a>
+				</div>
+			</div>
+			<div class="footer-row">
+				<ul class="links">
+					<li><a id="footer-support-link" href="https://support.serviceshub.microsoft.com/supportforbusiness/create?sapId=d66407ed-3967-b000-4cfb-2c318cad363d"
+							target="_blank" rel="noopener">Support</a></li>
+					<li><a id="footer-privacy-link" href="https://go.microsoft.com/fwlink/?LinkId=521839"
+							target="_blank" rel="noopener">Privacy</a></li>
+					<li style="display: none;"><a id="footer-cookie-link" style="cursor: pointer;" onclick="manageConsent()"
+							target="_blank" rel="noopener">Manage Cookies</a></li>
+					<li><a id="footer-terms-link" href="https://www.microsoft.com/legal/terms-of-use"
+							target="_blank" rel="noopener">Terms of Use</a></li>
+					<li><a id="footer-license-link" href="/License"
+							target="_blank" rel="noopener">License</a></li>
+				</ul>
+			</div>
+		</div>
+	</footer>
+	<script type="module">
+		document.addEventListener('DOMContentLoaded', () => {
+			const copilotDeepLinks = document.querySelectorAll('.copilot-deep-link');
+			if (copilotDeepLinks.length === 0) {
+				return;
+			}
+			if (window.innerWidth < 992) {
+				for (const link of copilotDeepLinks) {
+					link.href = 'https://aka.ms/vscode-activatecopilotfree';
+				}
+			}
+		});
+	</script>
+
+	<script src="/dist/index.js"></script>
+
+	
+
+	<script type="application/ld+json">
+		{
+			"@context" : "http://schema.org",
+			"@type" : "SoftwareApplication",
+			"name" : "Visual Studio Code",
+			"softwareVersion": "1.97",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			},
+			"applicationCategory": "DeveloperApplication",
+			"applicationSubCategory": "Text Editor",
+			"alternateName": "VS Code",
+			"datePublished": "2021-11-03",
+			"operatingSystem": "Mac, Linux, Windows",
+			"logo": "https://code.visualstudio.com/assets/apple-touch-icon.png",
+			"screenshot": "https://code.visualstudio.com/assets/home/home-screenshot-win.png",
+			"releaseNotes": "https://code.visualstudio.com/updates",
+			"downloadUrl": "https://code.visualstudio.com/download",
+			"license": "https://code.visualstudio.com/license",
+			"softwareRequirements": "https://code.visualstudio.com/docs/supporting/requirements",
+			"url" : "https://code.visualstudio.com",
+			"author": {
+				"@type": "Organization",
+				"name": "Microsoft"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "Microsoft"
+			},
+			"maintainer": {
+				"@type": "Organization",
+				"name": "Microsoft"
+			},
+			"potentialAction": {
+				"@type": "SearchAction",
+				"target": "https://code.visualstudio.com/Search?q={search_term_string}",
+				"query-input": "required name=search_term_string"
+			},
+			"sameAs" : [
+				"https://en.wikipedia.org/wiki/Visual_Studio_Code",
+				"https://twitter.com/code",
+				"https://www.youtube.com/code",
+				"https://www.tiktok.com/@vscode",
+				"https://github.com/microsoft/vscode"
+			]
+		}
+	</script>
+</body>
+
+</html>
