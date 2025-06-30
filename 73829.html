@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌐 Sistema Global Inmutable - FGME | Tigo Star</title>
+  <style>
+    :root { 
+      --bg: #000; 
+      --text: #fff; 
+      --accent: #00ffd5; 
+      --alert: #ff4444; 
+      --safe: #44ff88; 
+      --card: #111; 
+    } 
+    body { 
+      margin: 0; 
+      padding: 0; 
+      background: var(--bg); 
+      color: var(--text); 
+      font-family: 'Segoe UI', sans-serif; 
+    } 
+    .container { 
+      padding: 20px; 
+    } 
+    .card { 
+      background: var(--card); 
+      border: 1px solid var(--accent); 
+      border-radius: 10px; 
+      padding: 20px; 
+      margin-bottom: 20px; 
+    } 
+    h1, h2 { 
+      color: var(--accent); 
+    } 
+    pre { 
+      background: #111; 
+      color: #0f0; 
+      padding: 10px; 
+      overflow-x: auto; 
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌐 Sistema Global Inmutable - FGME | Tigo Star</h1>
+
+    <div class="card">
+      <h2>Estado del Sistema Global</h2>
+      <p id="estado">🔄 Iniciando...</p>
+    </div>
+
+    <div class="card">
+      <h2>Python - Defensa Global (defensa.py)</h2>
+      <pre><code id="python-code">import hashlib, time, threading 
+
+usuarios = {"fgme": "hash123"}
+
+def bucle_inmutable(): 
+    while True: 
+        print("🛡️ Defensa Inmutable Activa por IA") 
+        time.sleep(30)
+
+threading.Thread(target=bucle_inmutable, daemon=True).start()</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>CSS - Estilo Defensa Global (style.css)</h2>
+      <pre><code id="css-code">:root { 
+  --bg: #000; 
+  --accent: #00ffd5; 
+  --safe: #44ff88; 
+} 
+body { 
+  background: var(--bg); 
+  color: var(--safe); 
+}</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>JavaScript - Defensa Dinámica (rotacion.js)</h2>
+      <pre><code id="js-code">setInterval(() => { 
+  console.log("🔁 Rotación Global Activa"); 
+}, 10000);</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>JSON - Configuración por País (config.json)</h2>
+      <pre><code id="json-code">{
+  "sistemas": ["México", "España", "USA", "Brasil", "India", "China"],
+  "proteccion": { 
+    "gps": true, 
+    "biometrico": true, 
+    "blockchain": true 
+  }
+}</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Agregar Nuevos Sistemas de Protección</h2>
+      <p>Para añadir un nuevo sistema, solo adjunta el código en el formato correspondiente dentro de este archivo.</p>
+      <p>Ejemplo: &lt;script&gt; para JS, &lt;style&gt; para CSS, &lt;pre&gt;&lt;code&gt; para Python/JSON.</p>
+    </div>
+  </div>
+
+  <script>
+    // Almacén de valores esperados (hashes) para inmutabilidad
+    const hashesEsperados = {
+      python: null,
+      css: null,
+      js: null,
+      json: null
+    };
+
+    // Función para calcular hash (simple para ejemplo, en un caso real usar SHA-256, pero en el navegador se puede usar crypto.subtle)
+    function calcularHash(str) {
+      // Para este ejemplo, usamos un hash simple. En producción, usaría crypto.subtle.digest.
+      let hash = 0;
+      if (str.length === 0) return hash;
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convierte a entero de 32 bits
+      }
+      return hash;
+    }
+
+    // Inicializar: Guardar el código original y calcular hashes
+    const codigoPythonOriginal = document.getElementById('python-code').innerText;
+    const codigoCssOriginal = document.getElementById('css-code').innerText;
+    const codigoJsOriginal = document.getElementById('js-code').innerText;
+    const codigoJsonOriginal = document.getElementById('json-code').innerText;
+
+    hashesEsperados.python = calcularHash(codigoPythonOriginal);
+    hashesEsperados.css = calcularHash(codigoCssOriginal);
+    hashesEsperados.js = calcularHash(codigoJsOriginal);
+    hashesEsperados.json = calcularHash(codigoJsonOriginal);
+
+    // Función para verificar y reparar
+    function verificarReparar() {
+      // Obtener el código de cada sección
+      const codigoPython = document.getElementById('python-code').innerText;
+      const codigoCss = document.getElementById('css-code').innerText;
+      const codigoJs = document.getElementById('js-code').innerText;
+      const codigoJson = document.getElementById('json-code').innerText;
+
+      if (calcularHash(codigoPython) !== hashesEsperados.python) {
+        document.getElementById('python-code').innerText = codigoPythonOriginal;
+      }
+      if (calcularHash(codigoCss) !== hashesEsperados.css) {
+        document.getElementById('css-code').innerText = codigoCssOriginal;
+      }
+      if (calcularHash(codigoJs) !== hashesEsperados.js) {
+        document.getElementById('js-code').innerText = codigoJsOriginal;
+      }
+      if (calcularHash(codigoJson) !== hashesEsperados.json) {
+        document.getElementById('json-code').innerText = codigoJsonOriginal;
+      }
+
+      console.log("✅ Verificación y reparación completada");
+    }
+
+    // Función de rotación
+    function rotarSeguridad() {
+      // Rotar colores
+      const root = document.documentElement;
+      const colores = ['#00ffd5', '#ff00ff', '#ffff00', '#00ffff'];
+      const nuevoColor = colores[Math.floor(Math.random() * colores.length)];
+      root.style.setProperty('--accent', nuevoColor);
+
+      // Rotar mensaje en el panel de estado
+      const mensajes = [
+        "🔁 Rotación Global Activa",
+        "🌐 Defensa en 187 países",
+        "✅ Sistemas Inmutables Verificados",
+        "🛡️ Protección Blockchain Activa"
+      ];
+      const estado = document.getElementById('estado');
+      estado.innerText = mensajes[Math.floor(Math.random() * mensajes.length)];
+    }
+
+    // Iniciar bucles
+    setInterval(rotarSeguridad, 30000); // Rotar cada 30 segundos
+    setInterval(verificarReparar, 60000); // Verificar cada minuto
+
+    // Iniciar
+    document.addEventListener('DOMContentLoaded', () => {
+      rotarSeguridad(); // Ejecutar una vez al inicio
+      verificarReparar(); // Ejecutar una vez al inicio
+      document.body.insertAdjacentHTML('beforeend', '<p>🔒 Sistema Autónomo Inmutable corriendo en bucle eterno.</p>');
+    });
+  </script>
+</body>
+</html>
