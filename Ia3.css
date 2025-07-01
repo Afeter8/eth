@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FGME Inmutable CSS</title>
+  <style>
+    :root {
+      --bg-color: #000000;
+      --fg-color: #00ffd5;
+      --font-main: monospace;
+    }html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--fg-color);
+  font-family: var(--font-main);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: ciclo-eterno 60s infinite alternate ease-in-out;
+}
+
+h1 {
+  font-size: 2rem;
+  animation: latido 5s infinite ease-in-out;
+}
+
+p {
+  font-size: 1rem;
+  animation: brillar 10s infinite linear;
+}
+
+@keyframes ciclo-eterno {
+  0%   { filter: brightness(1); }
+  25%  { filter: contrast(1.2); }
+  50%  { filter: grayscale(0.2); }
+  75%  { filter: sepia(0.3); }
+  100% { filter: brightness(1.1); }
+}
+
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes brillar {
+  0% { text-shadow: 0 0 2px var(--fg-color); }
+  50% { text-shadow: 0 0 8px var(--fg-color); }
+  100% { text-shadow: 0 0 2px var(--fg-color); }
+}
+
+  </style>
+</head>
+<body>
+  <h1>🧬 Sistema CSS Inmutable</h1>
+  <p>En ejecución continua, sin intervención externa.</p>
+</body>
+</html>
