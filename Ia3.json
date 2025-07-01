@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sistema JSON Inmutable FGME</title>
+<style>
+  body {
+    background: #0d0d0d;
+    color: #00ffd5;
+    font-family: monospace;
+    padding: 1rem;
+  }
+  pre {
+    border: 1px dashed #00ffd5;
+    padding: 1rem;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+</style>
+</head>
+<body>
+<h1>📦 Sistema JSON Inmutable FGME</h1>
+<p>Ejecutando registro en bucle eterno, sin intervención externa.</p>
+<pre id="log"></pre>
+
+<script>
+  const sistemaJSON = {
+    sistema: "FGME Codex Universal",
+    version: "1.0",
+    registros: [],
+  };
+
+  function registrarEvento() {
+    const tiempo = new Date().toISOString();
+    const evento = {
+      timestamp: tiempo,
+      evento: "registro validado",
+      firma: btoa("FGME-" + tiempo).slice(0, 32),
+    };
+    sistemaJSON.registros.push(evento);
+    if (sistemaJSON.registros.length > 15) {
+      sistemaJSON.registros.shift();
+    }
+    document.getElementById("log").textContent = JSON.stringify(sistemaJSON, null, 2);
+  }
+
+  setInterval(registrarEvento, 5000);
+</script>
+</body>
+</html>
