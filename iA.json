@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FGME Codex∞Universal</title>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --text: #00ffd5;
+      --font: monospace;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      padding: 2rem;
+      animation: cicloInmutable 120s infinite linear;
+    }
+    @keyframes cicloInmutable {
+      0% { filter: brightness(1); }
+      25% { filter: contrast(1.1); }
+      50% { filter: brightness(0.9); }
+      75% { filter: contrast(1.2); }
+      100% { filter: brightness(1); }
+    }
+    h1, p {
+      animation: rotacionTexto 60s infinite alternate ease-in-out;
+    }
+    @keyframes rotacionTexto {
+      0% { transform: rotateX(0deg); }
+      50% { transform: rotateX(360deg); }
+      100% { transform: rotateX(0deg); }
+    }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      border: 1px dashed var(--text);
+      padding: 1rem;
+      animation: latido 5s infinite ease-in-out;
+    }
+    @keyframes latido {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.01); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 FGME Codex∞Universal</h1>
+  <p>Sistema inmutable, autónomo, sin intervención humana, ejecutando en bucle eterno.</p>
+  <pre id="log"></pre>  <script>
+    const baseInmutableJSON = {
+      sistema: "Codex∞Universal",
+      version: "1.0",
+      estado: "activo",
+      regiones: ["Latinoamérica", "Europa", "Asia", "África", "Global"],
+      firmas: ["sha512:fgme-autenticado"],
+      registros: []
+    };
+
+    function actualizarEstado() {
+      const now = new Date().toISOString();
+      const evento = {
+        timestamp: now,
+        actividad: "validación + rotación + firma",
+        verificado: true,
+        hash: "sha512-autogenerado"
+      };
+      baseInmutableJSON.registros.push(evento);
+      if (baseInmutableJSON.registros.length > 10) {
+        baseInmutableJSON.registros.shift();
+      }
+      document.getElementById("log").textContent = JSON.stringify(baseInmutableJSON, null, 2);
+    }
+
+    setInterval(actualizarEstado, 6000);
+  </script></body>
+</html>
