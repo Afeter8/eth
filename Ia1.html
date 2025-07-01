@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FGME Inmutable</title>
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #00ffd5;
+      --font: monospace;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      margin: 0;
+      padding: 2rem;
+      animation: fondo 60s infinite alternate ease-in-out;
+    }
+    @keyframes fondo {
+      0% { filter: brightness(1); }
+      50% { filter: brightness(0.85); }
+      100% { filter: brightness(1); }
+    }
+    h1 {
+      text-align: center;
+      animation: titilar 3s infinite ease-in-out;
+    }
+    @keyframes titilar {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    pre {
+      border: 1px dashed var(--text);
+      padding: 1rem;
+      margin-top: 2rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background-color: rgba(0,255,213,0.05);
+    }
+  </style>
+</head>
+<body>
+  <h1>🔐 Sistema Inmutable Autónomo FGME</h1>
+  <p>Ejecutando en bucle eterno, sin intervención humana o RF.</p>
+  <pre id="registro"></pre>  <script>
+    const codex = {
+      estado: "activo",
+      bitacora: [],
+      ejecutar() {
+        const evento = {
+          tiempo: new Date().toISOString(),
+          firma: this.generarFirma(),
+          estado: "verificado"
+        };
+        this.bitacora.push(evento);
+        if (this.bitacora.length > 15) this.bitacora.shift();
+        document.getElementById("registro").textContent = JSON.stringify(this.bitacora, null, 2);
+      },
+      generarFirma() {
+        return btoa("fgme" + Date.now()).slice(0, 32);
+      },
+      bucle() {
+        this.ejecutar();
+        setTimeout(() => this.bucle(), 6000);
+      }
+    };
+    codex.bucle();
+  </script></body>
+</html>
