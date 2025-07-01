@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FGME Codex∞Universal</title>
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #00ffd5;
+      font-family: monospace;
+      padding: 2rem;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 FGME Codex∞Universal</h1>
+  <p>Sistema inmutable, autónomo, sin intervención humana, ejecutando en bucle eterno.</p>
+  <pre id="log"></pre>  <script>
+    const sistema = {
+      estado: "🟢 Activo",
+      registro: [],
+
+      analizarCodigo(codigo) {
+        if (codigo.includes("eval(") || codigo.includes("document.write")) {
+          return "⚠️ Código riesgoso detectado";
+        }
+        return "✅ Código seguro";
+      },
+
+      traducir(codigo, de, a) {
+        if (de === "Python" && a === "JavaScript") {
+          return codigo.replace(/def /g, "function ").replace(/:/g, " {\n  // ...\n}");
+        }
+        return "// Sin traducción disponible";
+      },
+
+      rotarCodigo(codigo, direccion) {
+        switch (direccion) {
+          case "arriba": return codigo.split('').reverse().join('');
+          case "izquierda": return codigo.slice(1) + codigo[0];
+          case "derecha": return codigo[codigo.length - 1] + codigo.slice(0, -1);
+          default: return codigo;
+        }
+      },
+
+      ejecutar() {
+        const ejemplo = "def iniciar():\n  print(\"IA protegida\")";
+        const validado = this.analizarCodigo(ejemplo);
+        const traducido = this.traducir(ejemplo, "Python", "JavaScript");
+        const rotado = this.rotarCodigo(ejemplo, "derecha");
+        const evento = `\n⏳ [${new Date().toISOString()}]` +
+                       `\n🔍 Validación: ${validado}` +
+                       `\n🔁 Traducción: ${traducido}` +
+                       `\n🔄 Rotación: ${rotado}`;
+
+        this.registro.push(evento);
+        document.getElementById("log").textContent = this.registro.slice(-10).join("\n\n");
+      }
+    };
+
+    // Bucle eterno inmutable (controlado solo por IA interna)
+    setInterval(() => sistema.ejecutar(), 6000);
+  </script></body>
+</html>
