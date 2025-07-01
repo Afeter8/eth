@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FGME Codex∞Universal</title>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --text: #00ffd5;
+      --font: monospace;
+    }body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  padding: 2rem;
+  animation: cicloInmutable 120s infinite linear;
+}
+
+@keyframes cicloInmutable {
+  0% { filter: brightness(1); }
+  25% { filter: contrast(1.1); }
+  50% { filter: brightness(0.9); }
+  75% { filter: contrast(1.2); }
+  100% { filter: brightness(1); }
+}
+
+h1, p {
+  animation: rotacionTexto 60s infinite alternate ease-in-out;
+}
+
+@keyframes rotacionTexto {
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(360deg); }
+  100% { transform: rotateX(0deg); }
+}
+
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px dashed var(--text);
+  padding: 1rem;
+  animation: latido 5s infinite ease-in-out;
+}
+
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+}
+
+  </style>
+</head>
+<body>
+  <h1>🧠 FGME Codex∞Universal</h1>
+  <p>Sistema inmutable, autónomo, sin intervención humana, ejecutando en bucle eterno.</p>
+  <pre id="log"></pre>  <script>
+    const sistema = {
+      estado: "🟢 Activo",
+      registro: [],
+
+      analizarCodigo(codigo) {
+        if (codigo.includes("eval(") || codigo.includes("document.write")) {
+          return "⚠️ Código riesgoso detectado";
+        }
+        return "✅ Código seguro";
+      },
+
+      traducir(codigo, de, a) {
+        if (de === "Python" && a === "JavaScript") {
+          return codigo.replace(/def /g, "function ").replace(/:/g, " {\n  // ...\n}");
+        }
+        return "// Sin traducción disponible";
+      },
+
+      rotarCodigo(codigo, direccion) {
+        switch (direccion) {
+          case "arriba": return codigo.split('').reverse().join('');
+          case "izquierda": return codigo.slice(1) + codigo[0];
+          case "derecha": return codigo[codigo.length - 1] + codigo.slice(0, -1);
+          default: return codigo;
+        }
+      },
+
+      ejecutar() {
+        const ejemplo = "def iniciar():\n  print(\"IA protegida\")";
+        const validado = this.analizarCodigo(ejemplo);
+        const traducido = this.traducir(ejemplo, "Python", "JavaScript");
+        const rotado = this.rotarCodigo(ejemplo, "derecha");
+        const evento = `\n⏳ [${new Date().toISOString()}]` +
+                       `\n🔍 Validación: ${validado}` +
+                       `\n🔁 Traducción: ${traducido}` +
+                       `\n🔄 Rotación: ${rotado}`;
+
+        this.registro.push(evento);
+        document.getElementById("log").textContent = this.registro.slice(-10).join("\n\n");
+      }
+    };
+
+    setInterval(() => sistema.ejecutar(), 6000);
+  </script></body>
+</html>
