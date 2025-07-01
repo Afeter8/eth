@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FGME DeepSeek - Sistema de Rotación y Protección</title>
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --text: #00ffd5;
+    --text-secondary: #00ccaa;
+    --accent: #ff00aa;
+    --warning: #ff5555;
+    --safe: #55ff55;
+    --font: 'Courier New', monospace;
+    --border: 1px solid rgba(0, 255, 213, 0.3);
+    --panel-bg: rgba(10, 20, 30, 0.7);
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    padding: 1rem;
+    min-height: 100vh;
+    animation: fondoEterno 120s infinite linear;
+    overflow-x: hidden;
+  }
+  
+  @keyframes fondoEterno {
+    0% { filter: brightness(1); }
+    25% { filter: contrast(1.1); }
+    50% { filter: brightness(0.9); }
+    75% { filter: contrast(1.2); }
+    100% { filter: brightness(1); }
+  }
+  
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  header {
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: var(--border);
+  }
+  
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    animation: parpadeo 3s infinite ease-in-out;
+  }
+  
+  @keyframes parpadeo {
+    0%, 100% { opacity: 1; text-shadow: 0 0 15px var(--accent); }
+    50% { opacity: 0.8; text-shadow: 0 0 5px var(--accent); }
+  }
+  
+  .subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+  }
+  
+  .panel {
+    background: var(--panel-bg);
+    border: var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 0 15px rgba(0, 255, 213, 0.1);
+    backdrop-filter: blur(5px);
+  }
+  
+  .panel-full {
+    grid-column: 1 / -1;
+  }
+  
+  h2 {
+    color: var(--accent);
+    border-bottom: var(--border);
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .status {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+  
+  .status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--safe);
+  }
+  
+  .status-dot.warning {
+    background: var(--warning);
+  }
+  
+  .code-container {
+    background: rgba(0, 20, 30, 0.8);
+    border: var(--border);
+    border-radius: 5px;
+    padding: 1rem;
+    margin-top: 1rem;
+    max-height: 300px;
+    overflow: auto;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    position: relative;
+  }
+  
+  .language-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--accent);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0 0 0 5px;
+    font-size: 0.75rem;
+  }
+  
+  pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: var(--font);
+  }
+  
+  .code-keyword {
+    color: #ff5555;
+  }
+  
+  .code-function {
+    color: #55ff55;
+  }
+  
+  .code-comment {
+    color: #00aaff;
+  }
+  
+  .code-string {
+    color: #ffaa00;
+  }
+  
+  .rotation-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .control-group {
+    background: rgba(0, 30, 40, 0.6);
+    border: var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  
+  .control-group h3 {
+    margin-bottom: 0.8rem;
+    color: var(--text-secondary);
+  }
+  
+  .slider-container {
+    margin: 1rem 0;
+  }
+  
+  .slider-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .slider {
+    width: 100%;
+    height: 8px;
+    -webkit-appearance: none;
+    background: rgba(0, 100, 100, 0.5);
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--text);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .slider::-webkit-slider-thumb:hover {
+    background: var(--accent);
+    transform: scale(1.2);
+  }
+  
+  .btn {
+    display: inline-block;
+    width: 100%;
+    padding: 0.7rem;
+    background: rgba(0, 40, 40, 0.8);
+    color: var(--text);
+    border: var(--border);
+    border-radius: 4px;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  
+  .btn:hover {
+    background: rgba(0, 80, 80, 0.8);
+    box-shadow: 0 0 10px rgba(0, 255, 213, 0.3);
+  }
+  
+  .btn-primary {
+    background: rgba(0, 60, 80, 0.8);
+  }
+  
+  .btn-primary:hover {
+    background: rgba(0, 100, 120, 0.8);
+  }
+  
+  .btn-warning {
+    background: rgba(80, 20, 20, 0.8);
+  }
+  
+  .btn-warning:hover {
+    background: rgba(120, 30, 30, 0.8);
+  }
+  
+  .protection-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .stat-card {
+    background: rgba(0, 30, 40, 0.6);
+    border: var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+    color: var(--accent);
+  }
+  
+  .stat-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  .progress-bar {
+    height: 8px;
+    background: rgba(0, 100, 100, 0.5);
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .progress {
+    height: 100%;
+    background: var(--text);
+    border-radius: 4px;
+  }
+  
+  footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1.5rem 0;
+    border-top: var(--border);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  .encryption-badge {
+    display: inline-block;
+    background: rgba(0, 80, 100, 0.6);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🔒 FGME DeepSeek - Sistema de Rotación y Protección</h1>
+  <p class="subtitle">Protección avanzada con rotación automática de código y cifrado</p>
+</header>
+
+<div class="container">
+  <!-- Panel de Rotación de Código -->
+  <div class="panel">
+    <h2>🔄 Rotación de Código <span class="status"><span class="status-dot"></span> Activo</span></h2>
+    
+    <div class="code-container">
+      <span class="language-tag">HTML</span>
+      <pre id="html-code"><span class="code-comment">&lt;!-- Código HTML rotado automáticamente --&gt;</span>
+&lt;<span class="code-keyword">div</span> <span class="code-function">class</span>=<span class="code-string">"container"</span>&gt;
+  &lt;<span class="code-keyword">h1</span>&gt;{rotated_title}&lt;/<span class="code-keyword">h1</span>&gt;
+  &lt;<span class="code-keyword">p</span>&gt;{dynamic_content}&lt;/<span class="code-keyword">p</span>&gt;
+&lt;/<span class="code-keyword">div</span>&gt;</pre>
+    </div>
+    
+    <div class="code-container">
+      <span class="language-tag">JavaScript</span>
+      <pre id="js-code"><span class="code-comment">// Función de seguridad rotada</span>
+<span class="code-keyword">function</span> <span class="code-function">a9b3c7d</span>() {
+  <span class="code-keyword">const</span> rotatedToken = <span class="code-string">'fGmE_${Date.now()}_SeCuRe'</span>;
+  <span class="code-keyword">return</span> rotatedToken.<span class="code-function">split</span>(<span class="code-string">''</span>).<span class="code-function">reverse</span>().<span class="code-function">join</span>(<span class="code-string">''</span>);
+}</pre>
+    </div>
+  </div>
+  
+  <!-- Panel de Protección Avanzada -->
+  <div class="panel">
+    <h2>🛡️ Protección Avanzada <span class="status"><span class="status-dot"></span> Seguro</span></h2>
+    
+    <div class="code-container">
+      <span class="language-tag">JSON</span>
+      <pre id="json-code">{
+  <span class="code-string">"security_config"</span>: {
+    <span class="code-string">"encryption"</span>: <span class="code-keyword">"AES-256"</span>,
+    <span class="code-string">"rotation_interval"</span>: <span class="code-keyword">3600</span>,
+    <span class="code-string">"obfuscation_level"</span>: <span class="code-keyword">9</span>,
+    <span class="code-string">"last_rotation"</span>: <span class="code-keyword">"2025-07-01T14:30:00Z"</span>
+  },
+  <span class="code-string">"active_modules"</span>: [
+    <span class="code-keyword">"code_rotation"</span>,
+    <span class="code-keyword">"encrypted_storage"</span>,
+    <span class="code-keyword">"behavior_analysis"</span>
+  ]
+}</pre>
+    </div>
+    
+    <div class="code-container">
+      <span class="language-tag">Python</span>
+      <pre id="py-code"><span class="code-comment"># Código Python protegido</span>
+<span class="code-keyword">import</span> cryptography
+<span class="code-keyword">from</span> security_lib <span class="code-keyword">import</span> rotate_code, encrypt_data
+
+<span class="code-keyword">class</span> <span class="code-function">SecureSystem</span>:
+    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-keyword">self</span>):
+        <span class="code-keyword">self</span>.rotation_key = rotate_code.generate_key()
+        <span class="code-keyword">self</span>.encrypted_data = {}
+    
+    <span class="code-keyword">def</span> <span class="code-function">store_data</span>(<span class="code-keyword">self</span>, key, value):
+        encrypted = encrypt_data(value, <span class="code-keyword">self</span>.rotation_key)
+        <span class="code-keyword">self</span>.encrypted_data[key] = encrypted
+        
+    <span class="code-keyword">def</span> <span class="code-function">rotate_keys</span>(<span class="code-keyword">self</span>):
+        <span class="code-keyword">self</span>.rotation_key = rotate_code.rotate(<span class="code-keyword">self</span>.rotation_key)
+        <span class="code-comment"># Re-encriptar todos los datos con la nueva clave</span>
+        <span class="code-keyword">for</span> key <span class="code-keyword">in</span> <span class="code-keyword">self</span>.encrypted_data:
+            decrypted = encrypt_data.decrypt(<span class="code-keyword">self</span>.encrypted_data[key], old_key)
+            <span class="code-keyword">self</span>.encrypted_data[key] = encrypt_data(decrypted, <span class="code-keyword">self</span>.rotation_key)</pre>
+    </div>
+  </div>
+  
+  <!-- Panel de Control -->
+  <div class="panel panel-full">
+    <h2>🎛️ Control de Rotación y Protección</h2>
+    
+    <div class="rotation-controls">
+      <div class="control-group">
+        <h3>Rotación Automática</h3>
+        <div class="slider-container">
+          <div class="slider-label">
+            <span>Frecuencia:</span>
+            <span id="rotation-frequency">60 minutos</span>
+          </div>
+          <input type="range" min="5" max="180" value="60" class="slider" id="rotation-slider">
+        </div>
+        <div class="slider-container">
+          <div class="slider-label">
+            <span>Nivel de Ofuscación:</span>
+            <span id="obfuscation-level">Alto</span>
+          </div>
+          <input type="range" min="1" max="10" value="8" class="slider" id="obfuscation-slider">
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <h3>Acciones Inmediatas</h3>
+        <button class="btn btn-primary" id="rotate-now">Rotar Código Ahora</button>
+        <button class="btn" id="refresh-keys">Actualizar Claves de Cifrado</button>
+        <button class="btn" id="generate-new">Generar Nuevas Firmas</button>
+      </div>
+      
+      <div class="control-group">
+        <h3>Protección Avanzada</h3>
+        <button class="btn" id="enable-encryption">Habilitar Cifrado AES-256</button>
+        <button class="btn btn-warning" id="lock-system">Bloquear Sistema</button>
+        <button class="btn" id="audit-security">Auditar Seguridad</button>
+      </div>
+    </div>
+    
+    <div class="protection-stats">
+      <div class="stat-card">
+        <div class="stat-label">Última Rotación</div>
+        <div class="stat-value" id="last-rotation">0 min</div>
+        <div class="progress-bar">
+          <div class="progress" id="rotation-progress" style="width: 15%"></div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">Nivel de Seguridad</div>
+        <div class="stat-value" id="security-level">94%</div>
+        <div class="progress-bar">
+          <div class="progress" style="width: 94%"></div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">Datos Protegidos</div>
+        <div class="stat-value" id="protected-data">128</div>
+        <div class="progress-bar">
+          <div class="progress" style="width: 85%"></div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">Claves Rotadas</div>
+        <div class="stat-value" id="rotated-keys">42</div>
+        <div class="progress-bar">
+          <div class="progress" style="width: 70%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>FGME DeepSeek - Sistema Inmutable de Rotación y Protección v3.0</p>
+  <div class="encryption-badge">🔐 Todos los datos están cifrados con AES-256</div>
+</footer>
+
+<script>
+  // Sistema de Rotación y Protección de Código
+  const FGME_ProtectionSystem = {
+    // Configuración inicial
+    config: {
+      rotationInterval: 60000, // 60 segundos para demo (normalmente 1 hora)
+      obfuscationLevel: 8,
+      encryptionEnabled: true,
+      lastRotation: Date.now(),
+      rotationCount: 0,
+      securityLevel: 94,
+      protectedItems: 128,
+      rotationTimer: null
+    },
+    
+    // Inicializar el sistema
+    init() {
+      this.setupControls();
+      this.startRotationCycle();
+      this.updateUI();
+      this.generateCodeSamples();
+      
+      // Iniciar actualización periódica de UI
+      setInterval(() => this.updateUI(), 1000);
+    },
+    
+    // Configurar controles
+    setupControls() {
+      // Slider de frecuencia de rotación
+      document.getElementById('rotation-slider').addEventListener('input', (e) => {
+        const value = parseInt(e.target.value);
+        this.config.rotationInterval = value * 1000; // Convertir a milisegundos
+        document.getElementById('rotation-frequency').textContent = `${value} minutos`;
+        this.restartRotationCycle();
+      });
+      
+      // Slider de nivel de ofuscación
+      document.getElementById('obfuscation-slider').addEventListener('input', (e) => {
+        const value = parseInt(e.target.value);
+        this.config.obfuscationLevel = value;
+        const levels = ['Muy Bajo', 'Bajo', 'Medio', 'Alto', 'Muy Alto'];
+        document.getElementById('obfuscation-level').textContent = levels[Math.min(value-1, 4)];
+        this.generateCodeSamples();
+      });
+      
+      // Botón de rotación inmediata
+      document.getElementById('rotate-now').addEventListener('click', () => {
+        this.rotateCode();
+        this.config.rotationCount++;
+        document.getElementById('rotated-keys').textContent = this.config.rotationCount;
+      });
+      
+      // Botón para actualizar claves
+      document.getElementById('refresh-keys').addEventListener('click', () => {
+        this.refreshEncryptionKeys();
+        this.showNotification("Claves de cifrado actualizadas correctamente");
+      });
+      
+      // Botón para generar nuevas firmas
+      document.getElementById('generate-new').addEventListener('click', () => {
+        this.generateNewSignatures();
+        this.showNotification("Nuevas firmas de seguridad generadas");
+      });
+      
+      // Botón para habilitar cifrado
+      document.getElementById('enable-encryption').addEventListener('click', () => {
+        this.config.encryptionEnabled = !this.config.encryptionEnabled;
+        const status = this.config.encryptionEnabled ? "HABILITADO" : "DESHABILITADO";
+        this.showNotification(`Cifrado AES-256 ${status}`);
+        this.updateEncryptionBadge();
+      });
+      
+      // Botón para bloquear sistema
+      document.getElementById('lock-system').addEventListener('click', () => {
+        this.lockSystem();
+      });
+      
+      // Botón para auditar seguridad
+      document.getElementById('audit-security').addEventListener('click', () => {
+        this.runSecurityAudit();
+      });
+    },
+    
+    // Iniciar ciclo de rotación
+    startRotationCycle() {
+      if (this.config.rotationTimer) {
+        clearInterval(this.config.rotationTimer);
+      }
+      
+      this.config.rotationTimer = setInterval(() => {
+        this.rotateCode();
+        this.config.rotationCount++;
+        document.getElementById('rotated-keys').textContent = this.config.rotationCount;
+      }, this.config.rotationInterval);
+    },
+    
+    // Reiniciar ciclo de rotación
+    restartRotationCycle() {
+      this.startRotationCycle();
+      this.showNotification(`Frecuencia de rotación actualizada: ${this.config.rotationInterval/1000} segundos`);
+    },
+    
+    // Rotar código
+    rotateCode() {
+      this.config.lastRotation = Date.now();
+      this.generateCodeSamples();
+      this.config.securityLevel = Math.min(100, this.config.securityLevel + 0.5);
+      this.config.protectedItems += 2;
+      
+      this.showNotification("Código rotado automáticamente");
+      this.updateUI();
+    },
+    
+    // Generar muestras de código rotado
+    generateCodeSamples() {
+      const obfuscation = this.config.obfuscationLevel;
+      
+      // Generar HTML rotado
+      const htmlCode = `&lt;<span class="code-keyword">div</span> <span class="code-function">class</span>=<span class="code-string">"${this.randomString(8)}"</span>&gt;
+  &lt;<span class="code-keyword">h1</span>&gt;${this.randomString(12)}&lt;/<span class="code-keyword">h1</span>&gt;
+  &lt;<span class="code-keyword">p</span>&gt;${this.randomString(20 + obfuscation)}&lt;/<span class="code-keyword">p</span>&gt;
+&lt;/<span class="code-keyword">div</span>&gt;`;
+      document.getElementById('html-code').innerHTML = htmlCode;
+      
+      // Generar JavaScript rotado
+      const jsFunction = `a${this.randomHex(4)}`;
+      const jsCode = `<span class="code-keyword">function</span> <span class="code-function">${jsFunction}</span>() {
+  <span class="code-keyword">const</span> rotatedToken = <span class="code-string">'${this.randomString(12 + obfuscation)}'</span>;
+  <span class="code-keyword">return</span> rotatedToken.<span class="code-function">${this.rotatedMethod()}</span>();
+}`;
+      document.getElementById('js-code').innerHTML = jsCode;
+      
+      // Actualizar JSON
+      const jsonCode = `{
+  <span class="code-string">"security_config"</span>: {
+    <span class="code-string">"encryption"</span>: <span class="code-keyword">"AES-256"</span>,
+    <span class="code-string">"rotation_interval"</span>: <span class="code-keyword">${Math.floor(this.config.rotationInterval/1000)}</span>,
+    <span class="code-string">"obfuscation_level"</span>: <span class="code-keyword">${obfuscation}</span>,
+    <span class="code-string">"last_rotation"</span>: <span class="code-keyword">"${new Date().toISOString()}"</span>
+  },
+  <span class="code-string">"active_modules"</span>: [
+    <span class="code-keyword">"code_rotation"</span>,
+    <span class="code-keyword">"encrypted_storage"</span>,
+    <span class="code-keyword">"${this.randomString(8)}"</span>
+  ]
+}`;
+      document.getElementById('json-code').innerHTML = jsonCode;
+    },
+    
+    // Actualizar UI
+    updateUI() {
+      const now = Date.now();
+      const lastRotation = this.config.lastRotation;
+      const elapsed = Math.floor((now - lastRotation) / 1000);
+      const interval = this.config.rotationInterval / 1000;
+      const progress = Math.min(100, (elapsed / interval) * 100);
+      
+      document.getElementById('last-rotation').textContent = `${elapsed} seg`;
+      document.getElementById('rotation-progress').style.width = `${progress}%`;
+      
+      document.getElementById('security-level').textContent = `${this.config.securityLevel.toFixed(1)}%`;
+      document.querySelectorAll('.progress-bar .progress')[1].style.width = `${this.config.securityLevel}%`;
+      
+      document.getElementById('protected-data').textContent = this.config.protectedItems;
+      document.querySelectorAll('.progress-bar .progress')[2].style.width = 
+        `${Math.min(100, this.config.protectedItems/150 * 100)}%`;
+    },
+    
+    // Actualizar badge de cifrado
+    updateEncryptionBadge() {
+      const badge = document.querySelector('.encryption-badge');
+      if (this.config.encryptionEnabled) {
+        badge.innerHTML = '🔐 Todos los datos están cifrados con AES-256';
+        badge.style.background = 'rgba(0, 80, 100, 0.6)';
+      } else {
+        badge.innerHTML = '⚠️ Cifrado deshabilitado - Datos vulnerables';
+        badge.style.background = 'rgba(120, 30, 30, 0.6)';
+      }
+    },
+    
+    // Métodos de ayuda
+    randomString(length) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let result = '';
+      for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    },
+    
+    randomHex(length) {
+      const hex = '0123456789abcdef';
+      let result = '';
+      for (let i = 0; i < length; i++) {
+        result += hex.charAt(Math.floor(Math.random() * hex.length));
+      }
+      return result;
+    },
+    
+    rotatedMethod() {
+      const methods = ['split', 'reverse', 'slice', 'replace', 'toUpperCase', 'toLowerCase', 'trim'];
+      return methods[Math.floor(Math.random() * methods.length)];
+    },
+    
+    // Funciones de seguridad
+    refreshEncryptionKeys() {
+      this.config.securityLevel = Math.min(100, this.config.securityLevel + 1.2);
+      this.showNotification("Claves de cifrado actualizadas correctamente");
+    },
+    
+    generateNewSignatures() {
+      this.config.securityLevel = Math.min(100, this.config.securityLevel + 0.8);
+      this.showNotification("Nuevas firmas de seguridad generadas");
+    },
+    
+    lockSystem() {
+      this.showNotification("⚠️ Sistema bloqueado. Todas las funciones deshabilitadas.");
+      clearInterval(this.config.rotationTimer);
+      
+      // Simular bloqueo de UI
+      document.querySelectorAll('.btn, .slider').forEach(el => {
+        el.disabled = true;
+        el.style.opacity = '0.5';
+        el.style.cursor = 'not-allowed';
+      });
+      
+      document.querySelector('.status-dot').style.background = 'var(--warning)';
+      document.querySelector('h2 span.status').innerHTML = '<span class="status-dot warning"></span> BLOQUEADO';
+    },
+    
+    runSecurityAudit() {
+      this.showNotification("Iniciando auditoría de seguridad...");
+      
+      // Simular proceso de auditoría
+      setTimeout(() => {
+        const vulnerabilities = Math.floor(Math.random() * 3);
+        if (vulnerabilities === 0) {
+          this.showNotification("✅ Auditoría completada: 0 vulnerabilidades encontradas");
+          this.config.securityLevel = 100;
+        } else {
+          this.showNotification(`⚠️ Auditoría completada: ${vulnerabilities} vulnerabilidades encontradas`);
+          this.config.securityLevel = Math.max(70, this.config.securityLevel - vulnerabilities * 5);
+        }
+      }, 2000);
+    },
+    
+    // Mostrar notificación
+    showNotification(message) {
+      // Crear notificación
+      const notification = document.createElement('div');
+      notification.textContent = message;
+      notification.style.position = 'fixed';
+      notification.style.bottom = '20px';
+      notification.style.right = '20px';
+      notification.style.backgroundColor = 'var(--panel-bg)';
+      notification.style.color = 'var(--text)';
+      notification.style.border = 'var(--border)';
+      notification.style.borderRadius = '5px';
+      notification.style.padding = '12px 20px';
+      notification.style.zIndex = '1000';
+      notification.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
+      notification.style.animation = 'fadeIn 0.3s';
+      
+      document.body.appendChild(notification);
+      
+      // Eliminar después de 3 segundos
+      setTimeout(() => {
+        notification.style.animation = 'fadeOut 0.5s';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 500);
+      }, 3000);
+    }
+  };
+
+  // Iniciar el sistema cuando se cargue la página
+  window.onload = () => {
+    // Agregar estilos de animación para notificaciones
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fadeOut {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(20px); }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    FGME_ProtectionSystem.init();
+  };
+</script>
+</body>
+</html>
