@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FGME DeepSeek - Sistema Inmutable de Seguridad</title>
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --text: #00ffd5;
+    --text-secondary: #00ccaa;
+    --accent: #ff00aa;
+    --warning: #ff5555;
+    --safe: #55ff55;
+    --font: 'Courier New', monospace;
+    --border: 1px solid rgba(0, 255, 213, 0.3);
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    padding: 1rem;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    animation: fondoEterno 120s infinite linear;
+    overflow-x: hidden;
+  }
+  
+  @keyframes fondoEterno {
+    0% { filter: brightness(1); }
+    25% { filter: contrast(1.1); }
+    50% { filter: brightness(0.9); }
+    75% { filter: contrast(1.2); }
+    100% { filter: brightness(1); }
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+  
+  @media (max-width: 900px) {
+    .container {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .panel {
+    background: rgba(10, 20, 30, 0.7);
+    border: var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 0 15px rgba(0, 255, 213, 0.1);
+    backdrop-filter: blur(5px);
+  }
+  
+  .panel-full {
+    grid-column: 1 / -1;
+  }
+  
+  h1 {
+    text-align: center;
+    margin: 1rem 0 0.5rem;
+    animation: parpadeo 3s infinite ease-in-out;
+    font-size: 2.5rem;
+    text-shadow: 0 0 10px rgba(0, 255, 213, 0.5);
+  }
+  
+  @keyframes parpadeo {
+    0%, 100% { opacity: 1; text-shadow: 0 0 15px var(--accent); }
+    50% { opacity: 0.8; text-shadow: 0 0 5px var(--accent); }
+  }
+  
+  .subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+  }
+  
+  h2 {
+    color: var(--accent);
+    border-bottom: var(--border);
+    padding-bottom: 0.5rem;
+    margin-top: 0;
+  }
+  
+  .status-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+  }
+  
+  .status-box {
+    background: rgba(0, 40, 40, 0.6);
+    border: var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    min-width: 180px;
+    text-align: center;
+  }
+  
+  .status-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+  }
+  
+  .safe { color: var(--safe); }
+  .warning { color: var(--warning); }
+  
+  .progress-bar {
+    height: 8px;
+    background: rgba(0, 100, 100, 0.5);
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .progress {
+    height: 100%;
+    background: var(--text);
+    border-radius: 4px;
+    animation: progress-pulse 2s infinite alternate;
+  }
+  
+  @keyframes progress-pulse {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+  
+  .log-container {
+    height: 300px;
+    overflow-y: auto;
+    background: rgba(0, 20, 30, 0.6);
+    border: var(--border);
+    border-radius: 4px;
+    padding: 1rem;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+  
+  .log-entry {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0, 255, 213, 0.1);
+  }
+  
+  .log-time {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+  }
+  
+  .log-message {
+    margin: 0.3rem 0;
+  }
+  
+  .security-event {
+    background: rgba(255, 0, 170, 0.1);
+    border-left: 3px solid var(--accent);
+    padding-left: 0.5rem;
+  }
+  
+  .learning-event {
+    background: rgba(0, 255, 213, 0.1);
+    border-left: 3px solid var(--text);
+    padding-left: 0.5rem;
+  }
+  
+  .model-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .model-box {
+    background: rgba(0, 30, 40, 0.6);
+    border: var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  
+  .model-title {
+    color: var(--text-secondary);
+    margin-top: 0;
+  }
+  
+  .features {
+    margin-top: 1rem;
+  }
+  
+  .feature {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(0, 255, 213, 0.1);
+  }
+  
+  .visualization {
+    height: 200px;
+    background: rgba(0, 10, 15, 0.8);
+    border: var(--border);
+    border-radius: 4px;
+    margin-top: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .neuron {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--text);
+    box-shadow: 0 0 8px var(--text);
+    animation: neuron-pulse 2s infinite alternate;
+  }
+  
+  @keyframes neuron-pulse {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.2); opacity: 1; }
+  }
+  
+  .connection {
+    position: absolute;
+    height: 1px;
+    background: rgba(0, 255, 213, 0.3);
+    transform-origin: 0 0;
+  }
+  
+  .controls {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    justify-content: center;
+  }
+  
+  button {
+    background: rgba(0, 40, 40, 0.8);
+    color: var(--text);
+    border: var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  button:hover {
+    background: rgba(0, 80, 80, 0.8);
+    box-shadow: 0 0 10px rgba(0, 255, 213, 0.3);
+  }
+  
+  footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    padding: 1rem 0;
+    border-top: var(--border);
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+
+<h1>🛡️ FGME DeepSeek - Sistema Inmutable</h1>
+<p class="subtitle">Protección autónoma con aprendizaje profundo continuo</p>
+
+<div class="status-container">
+  <div class="status-box">
+    <div>Estado del Sistema</div>
+    <div class="status-value safe">PROTEGIDO</div>
+    <div class="progress-bar">
+      <div class="progress" style="width: 100%"></div>
+    </div>
+  </div>
+  
+  <div class="status-box">
+    <div>Aprendizaje Continuo</div>
+    <div class="status-value">98.7%</div>
+    <div class="progress-bar">
+      <div class="progress" style="width: 98%"></div>
+    </div>
+  </div>
+  
+  <div class="status-box">
+    <div>Alertas de Seguridad</div>
+    <div class="status-value warning">3</div>
+    <div class="progress-bar">
+      <div class="progress" style="width: 15%"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="panel">
+    <h2>🔍 Monitor de Seguridad</h2>
+    <div class="log-container" id="securityLog"></div>
+  </div>
+  
+  <div class="panel">
+    <h2>🧠 Proceso de Aprendizaje</h2>
+    <div class="log-container" id="learningLog"></div>
+  </div>
+  
+  <div class="panel panel-full">
+    <h2>🤖 Modelo de Deep Learning</h2>
+    
+    <div class="model-container">
+      <div class="model-box">
+        <h3 class="model-title">Modelo de Detección de Amenazas</h3>
+        <div class="features">
+          <div class="feature">
+            <span>Precisión:</span>
+            <span>96.2% ↗</span>
+          </div>
+          <div class="feature">
+            <span>Falsos positivos:</span>
+            <span>1.8% ↘</span>
+          </div>
+          <div class="feature">
+            <span>Nuevos patrones:</span>
+            <span>12 esta semana</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="model-box">
+        <h3 class="model-title">Modelo de Comportamiento</h3>
+        <div class="features">
+          <div class="feature">
+            <span>Precisión:</span>
+            <span>94.5% ↗</span>
+          </div>
+          <div class="feature">
+            <span>Anomalías detectadas:</span>
+            <span>7</span>
+          </div>
+          <div class="feature">
+            <span>Actualizaciones:</span>
+            <span>3 hoy</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="visualization" id="neuralNetwork"></div>
+  </div>
+</div>
+
+<div class="controls">
+  <button id="simulateThreat">Simular Amenaza</button>
+  <button id="addData">Añadir Datos de Entrenamiento</button>
+  <button id="optimize">Optimizar Modelos</button>
+</div>
+
+<footer>
+  FGME DeepSeek - Sistema Inmutable v2.0 | Procesando datos continuamente
+</footer>
+
+<script>
+  // Módulo principal de protección inmutable con aprendizaje profundo
+  const FGME_DeepSeek = {
+    sistema: "DeepSeek FGME",
+    version: "2.0",
+    securityLogs: [],
+    learningLogs: [],
+    threatLevel: 0,
+    learningProgress: 0,
+    learningCycles: 0,
+    securityEvents: 0,
+    neuralNetwork: {
+      layers: [
+        { neurons: 8, activation: 'ReLU' },
+        { neurons: 6, activation: 'ReLU' },
+        { neurons: 4, activation: 'Sigmoid' },
+        { neurons: 2, activation: 'Softmax' }
+      ],
+      weights: [],
+      learningRate: 0.01
+    },
+    
+    // Inicializar el sistema
+    init() {
+      this.generateWeights();
+      this.iniciarBucle();
+      this.setupControls();
+      this.createNeuralNetwork();
+      
+      // Eventos iniciales
+      this.addSecurityLog("Sistema iniciado. Protecciones activadas");
+      this.addLearningLog("Modelo de aprendizaje profundo inicializado");
+      this.addLearningLog("Cargando datos históricos...");
+      setTimeout(() => {
+        this.addLearningLog("Datos históricos cargados. Comenzando aprendizaje continuo");
+      }, 2000);
+    },
+    
+    // Generar pesos iniciales para la red neuronal
+    generateWeights() {
+      this.neuralNetwork.weights = [];
+      for (let i = 0; i < this.neuralNetwork.layers.length - 1; i++) {
+        const weights = [];
+        const fromLayer = this.neuralNetwork.layers[i].neurons;
+        const toLayer = this.neuralNetwork.layers[i + 1].neurons;
+        
+        for (let j = 0; j < fromLayer; j++) {
+          const neuronWeights = [];
+          for (let k = 0; k < toLayer; k++) {
+            neuronWeights.push((Math.random() * 2 - 1).toFixed(2));
+          }
+          weights.push(neuronWeights);
+        }
+        this.neuralNetwork.weights.push(weights);
+      }
+    },
+    
+    // Crear visualización de la red neuronal
+    createNeuralNetwork() {
+      const container = document.getElementById('neuralNetwork');
+      container.innerHTML = '';
+      
+      const layerSpacing = container.clientWidth / (this.neuralNetwork.layers.length + 1);
+      const maxNeurons = Math.max(...this.neuralNetwork.layers.map(l => l.neurons));
+      
+      // Crear neuronas
+      this.neuralNetwork.layers.forEach((layer, layerIndex) => {
+        const neuronSpacing = container.clientHeight / (layer.neurons + 1);
+        const x = (layerIndex + 1) * layerSpacing;
+        
+        for (let i = 0; i < layer.neurons; i++) {
+          const y = (i + 1) * neuronSpacing;
+          const neuron = document.createElement('div');
+          neuron.className = 'neuron';
+          neuron.style.left = `${x}px`;
+          neuron.style.top = `${y}px`;
+          container.appendChild(neuron);
+          
+          // Crear conexiones a la siguiente capa
+          if (layerIndex < this.neuralNetwork.layers.length - 1) {
+            const nextLayer = this.neuralNetwork.layers[layerIndex + 1];
+            const nextNeuronSpacing = container.clientHeight / (nextLayer.neurons + 1);
+            const nextX = (layerIndex + 2) * layerSpacing;
+            
+            for (let j = 0; j < nextLayer.neurons; j++) {
+              const nextY = (j + 1) * nextNeuronSpacing;
+              
+              const connection = document.createElement('div');
+              connection.className = 'connection';
+              
+              const length = Math.sqrt(Math.pow(nextX - x, 2) + Math.pow(nextY - y, 2));
+              const angle = Math.atan2(nextY - y, nextX - x) * 180 / Math.PI;
+              
+              connection.style.width = `${length}px`;
+              connection.style.left = `${x}px`;
+              connection.style.top = `${y}px`;
+              connection.style.transform = `rotate(${angle}deg)`;
+              
+              // Opacidad basada en el peso
+              const weight = Math.abs(this.neuralNetwork.weights[layerIndex][i][j]);
+              connection.style.opacity = Math.min(0.2 + weight * 0.8, 0.8);
+              
+              container.appendChild(connection);
+            }
+          }
+        }
+      });
+    },
+    
+    // Registrar evento de seguridad
+    addSecurityLog(message, isThreat = false) {
+      const timestamp = new Date();
+      const logEntry = {
+        time: timestamp.toLocaleTimeString(),
+        message,
+        threat: isThreat
+      };
+      
+      this.securityLogs.unshift(logEntry);
+      if (this.securityLogs.length > 20) this.securityLogs.pop();
+      
+      if (isThreat) {
+        this.securityEvents++;
+        document.querySelector('.status-value.warning').textContent = this.securityEvents;
+        document.querySelector('.progress-bar .progress').style.width = `${Math.min(5 + this.securityEvents * 5, 100)}%`;
+      }
+      
+      this.updateSecurityLogDisplay();
+    },
+    
+    // Registrar evento de aprendizaje
+    addLearningLog(message) {
+      const timestamp = new Date();
+      const logEntry = {
+        time: timestamp.toLocaleTimeString(),
+        message
+      };
+      
+      this.learningLogs.unshift(logEntry);
+      if (this.learningLogs.length > 20) this.learningLogs.pop();
+      this.updateLearningLogDisplay();
+      
+      // Simular progreso de aprendizaje
+      this.learningProgress = Math.min(100, this.learningProgress + 0.5);
+      this.learningCycles++;
+      document.querySelector('.status-value:not(.safe):not(.warning)').textContent = 
+        `${this.learningProgress.toFixed(1)}%`;
+      document.querySelectorAll('.progress-bar .progress')[1].style.width = `${this.learningProgress}%`;
+    },
+    
+    // Actualizar visualización de logs de seguridad
+    updateSecurityLogDisplay() {
+      const logContainer = document.getElementById('securityLog');
+      logContainer.innerHTML = '';
+      
+      this.securityLogs.forEach(log => {
+        const entry = document.createElement('div');
+        entry.className = `log-entry ${log.threat ? 'security-event' : ''}`;
+        
+        entry.innerHTML = `
+          <div class="log-time">${log.time}</div>
+          <div class="log-message">${log.message}</div>
+        `;
+        
+        logContainer.appendChild(entry);
+      });
+    },
+    
+    // Actualizar visualización de logs de aprendizaje
+    updateLearningLogDisplay() {
+      const logContainer = document.getElementById('learningLog');
+      logContainer.innerHTML = '';
+      
+      this.learningLogs.forEach(log => {
+        const entry = document.createElement('div');
+        entry.className = 'log-entry learning-event';
+        
+        entry.innerHTML = `
+          <div class="log-time">${log.time}</div>
+          <div class="log-message">${log.message}</div>
+        `;
+        
+        logContainer.appendChild(entry);
+      });
+    },
+    
+    // Simular detección de amenazas
+    detectThreats() {
+      // Simular diferentes tipos de amenazas
+      const threatTypes = [
+        "Intento de acceso no autorizado",
+        "Patrón de tráfico inusual detectado",
+        "Comportamiento anómalo del usuario",
+        "Posible inyección de código detectada"
+      ];
+      
+      // 20% de probabilidad de detectar una amenaza en cada ciclo
+      if (Math.random() < 0.2) {
+        const threat = threatTypes[Math.floor(Math.random() * threatTypes.length)];
+        this.addSecurityLog(`ALERTA: ${threat}`, true);
+        
+        // Aprender de la amenaza
+        setTimeout(() => {
+          this.addLearningLog(`Aprendiendo de amenaza: ${threat}`);
+          this.addLearningLog("Actualizando pesos de la red neuronal...");
+          this.updateNeuralNetwork();
+        }, 1500);
+      } else {
+        this.addSecurityLog("Escaneo completado. Sin amenazas detectadas");
+      }
+    },
+    
+    // Simular actualización de la red neuronal
+    updateNeuralNetwork() {
+      // Simular ajuste de pesos
+      this.neuralNetwork.weights = this.neuralNetwork.weights.map(layer => 
+        layer.map(neuron => 
+          neuron.map(w => (parseFloat(w) + (Math.random() * 0.4 - 0.2)).toFixed(2))
+      );
+      
+      // Actualizar visualización
+      this.createNeuralNetwork();
+      
+      // Simular mejora de precisión
+      setTimeout(() => {
+        this.addLearningLog("Pesos actualizados. Precisión mejorada en un 0.3%");
+      }, 1000);
+    },
+    
+    // Simular optimización de modelos
+    optimizeModels() {
+      this.addLearningLog("Iniciando optimización de modelos...");
+      
+      setTimeout(() => {
+        this.addLearningLog("Reduciendo dimensionalidad de características...");
+      }, 800);
+      
+      setTimeout(() => {
+        this.addLearningLog("Ajustando hiperparámetros...");
+      }, 1600);
+      
+      setTimeout(() => {
+        this.addLearningLog("Optimización completada. Eficiencia mejorada en un 2.1%");
+      }, 2500);
+    },
+    
+    // Configurar controles
+    setupControls() {
+      document.getElementById('simulateThreat').addEventListener('click', () => {
+        const threats = [
+          "Simulación: Intento de inyección SQL detectado",
+          "Simulación: Comportamiento de bot detectado",
+          "Simulación: Patrón de ataque DDoS identificado"
+        ];
+        const threat = threats[Math.floor(Math.random() * threats.length)];
+        this.addSecurityLog(`SIMULACIÓN: ${threat}`, true);
+        
+        // Aprender de la simulación
+        setTimeout(() => {
+          this.addLearningLog(`Aprendiendo de simulación: ${threat}`);
+          this.updateNeuralNetwork();
+        }, 1500);
+      });
+      
+      document.getElementById('addData').addEventListener('click', () => {
+        const datasets = [
+          "Añadiendo 10,000 nuevos patrones de comportamiento",
+          "Importando 5,000 muestras de amenazas recientes",
+          "Incrementando dataset con 8,000 casos de uso legítimo"
+        ];
+        const dataset = datasets[Math.floor(Math.random() * datasets.length)];
+        this.addLearningLog(dataset);
+        
+        setTimeout(() => {
+          this.addLearningLog("Datos procesados. Entrenando modelo...");
+          this.learningProgress = Math.min(100, this.learningProgress + 5);
+          this.updateNeuralNetwork();
+        }, 2000);
+      });
+      
+      document.getElementById('optimize').addEventListener('click', () => {
+        this.optimizeModels();
+      });
+    },
+    
+    // Ejecutar ciclo principal
+    ejecutarCiclo() {
+      this.detectThreats();
+      
+      // Simular aprendizaje continuo
+      if (this.learningCycles % 3 === 0) {
+        const learningMessages = [
+          "Analizando nuevos patrones de datos...",
+          "Revisando falsos positivos para mejorar precisión...",
+          "Optimizando algoritmos de detección...",
+          "Entrenando con nuevos datos de comportamiento...",
+          "Ajustando umbrales de detección..."
+        ];
+        const message = learningMessages[Math.floor(Math.random() * learningMessages.length)];
+        this.addLearningLog(message);
+      }
+    },
+    
+    // Iniciar bucle principal
+    iniciarBucle() {
+      this.ejecutarCiclo();
+      setInterval(() => this.ejecutarCiclo(), 5000);
+    }
+  };
+
+  // Iniciar el sistema
+  window.onload = () => FGME_DeepSeek.init();
+</script>
+
+</body>
+</html>
